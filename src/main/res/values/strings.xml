@@ -1,0 +1,41 @@
+<resources>
+    <string name="app_name">MkFighterResultDB</string>
+    <string name="progressDialogTitle">Загрузка данных</string>
+    <string name="progressDialogMessage">Пожалуйста, подождите…</string>
+    <string name="errorMessage">Что-то пошло не так.. Попробуйте еще раз</string>
+    <array name="fighterImage">
+        <item>@drawable/cassie</item>
+        <item>@drawable/divora</item>
+        <item>@drawable/ermak</item>
+        <item>@drawable/erron_black</item>
+        <item>@drawable/ferra</item>
+        <item>@drawable/goro</item>
+        <item>@drawable/jax</item>
+        <item>@drawable/cage</item>
+        <item>@drawable/jac</item>
+        <item>@drawable/kano</item>
+        <item>@drawable/kenshi</item>
+        <item>@drawable/kitana</item>
+        <item>@drawable/kotal</item>
+        <item>@drawable/kung_jin</item>
+        <item>@drawable/kung_lao</item>
+        <item>@drawable/liu_kang</item>
+        <item>@drawable/mileena</item>
+        <item>@drawable/quanchi</item>
+        <item>@drawable/raiden</item>
+        <item>@drawable/reptile</item>
+        <item>@drawable/scorpion</item>
+        <item>@drawable/shinnok</item>
+        <item>@drawable/sonya</item>
+        <item>@drawable/sub_zero</item>
+        <item>@drawable/takeda</item>
+        <item>@drawable/tanya</item>
+        <item>@drawable/tremor</item>
+        <item>@drawable/triborg</item>
+        <item>@drawable/bo_rai_cho</item>
+        <item>@drawable/jason</item>
+        <item>@drawable/predator</item>
+        <item>@drawable/leatherface</item>
+        <item>@drawable/alien</item>
+    </array>
+</resources>
