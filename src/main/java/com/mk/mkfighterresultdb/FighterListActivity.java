@@ -7,11 +7,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.util.Log;
+import android.support.v7.widget.Toolbar;
 import android.widget.Toast;
 
-import com.futuremind.recyclerviewfastscroll.FastScroller;
 import com.mk.mkfighterresultdb.mvp.FighterActivityContract;
 import com.mk.mkfighterresultdb.mvp.FighterActivityPresenter;
 import com.simplecityapps.recyclerview_fastscroll.views.FastScrollRecyclerView;
@@ -21,14 +19,12 @@ import java.util.concurrent.Executor;
 public class FighterListActivity extends AppCompatActivity implements FighterActivityContract.View {
 
     String TAG = this.getClass().getSimpleName();
-    MyTaskExecutor executor = new MyTaskExecutor();
     FighterDao fighterDao;
 
     public TypedArray fighterPhoto;
 
     FighterActivityPresenter presenter;
 
-    //private RecyclerView recyclerView;
     private FastScrollRecyclerView recyclerView;
     private ProgressDialog loading;
 
@@ -45,17 +41,10 @@ public class FighterListActivity extends AppCompatActivity implements FighterAct
     protected void onStart() {
         super.onStart();
 
+        initToolbar();
         presenter.attachView(this);
         presenter.requestFighterList(fighterDao);
         loading = ProgressDialog.show(this, getString(R.string.progressDialogTitle), getString(R.string.progressDialogMessage), false, false);
-    }
-
-    public void initRecyclerView() {
-        //recyclerView = (RecyclerView) findViewById(R.id.fighterList);
-        recyclerView = (FastScrollRecyclerView) findViewById(R.id.recycler);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-        recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
     }
 
     @Override
@@ -89,14 +78,23 @@ public class FighterListActivity extends AppCompatActivity implements FighterAct
         recyclerView.setAdapter(adapter);
     }
 
+    private void initRecyclerView() {
+        recyclerView = (FastScrollRecyclerView) findViewById(R.id.fighterList);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+    }
+
     private TypedArray getPhotoFighterArray(){
         fighterPhoto = getResources().obtainTypedArray(R.array.fighterImage);
         return fighterPhoto;
     }
 
-    class MyTaskExecutor implements Executor {
-        public void execute(Runnable r) {
-            new Thread(r).start();
+    private void initToolbar(){
+        Toolbar toolbar = (Toolbar)findViewById(R.id.addDataToolbar);
+        setSupportActionBar(toolbar);
+        if (getSupportActionBar() != null){
+            getSupportActionBar().setTitle(R.string.titleFirstFighter);
         }
     }
 }

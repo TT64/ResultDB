@@ -17,13 +17,13 @@ public class OpponentPresenter extends BasePresenter<OpponentActivityContract.Vi
     }
 
     @Override
-    public void onFinishedResponseGetOpponentList(Fighter[] opponents) {
-        getView().onResponseSuccessRequestOpponentList();
+    public void onFinishedGetOpponentListResponse(Fighter[] opponents) {
+        getView().onSuccessRequestOpponentListResponse();
         getView().setListToRecyclerView(opponents);
     }
 
     @Override
-    public void onFailureResponseGetOpponentList() {
-        getView().onResponseFailureRequestOpponentList();
+    public void onFailureGetOpponentListResponse() {
+        getView().onFailureRequestOpponentListResponse();
     }
 }

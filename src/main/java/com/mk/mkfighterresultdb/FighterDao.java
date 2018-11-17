@@ -23,6 +23,12 @@ public interface FighterDao {
     @Query("SELECT * FROM fighter WHERE id <> :id")
     Flowable<Fighter[]> getOpponent(long id);
 
+    @Query("SELECT * FROM result WHERE idFirstFighter = :idFirst AND idSecondFighter = :idSecond")
+    Flowable<List<Result>> getResult(int idFirst, int idSecond);
+
+    @Insert(onConflict = REPLACE)
+    void insertResultData(Result result);
+
     @Insert(onConflict = REPLACE)
     void insertAll(Fighter... fighter);
 }

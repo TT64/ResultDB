@@ -13,19 +13,20 @@ public class OpponentActivityContract {
 
     public interface View extends MvpView {
 
-        void onResponseSuccessRequestOpponentList();
+        void onSuccessRequestOpponentListResponse();
 
-        void onResponseFailureRequestOpponentList();
+        void onFailureRequestOpponentListResponse();
 
         void setListToRecyclerView(Fighter[] fighters);
-    }
+
+        }
 
     public interface Model{
 
         interface onFinishedListener{
-            void onFinishedResponseGetOpponentList(Fighter[] fighters);
+            void onFinishedGetOpponentListResponse(Fighter[] fighters);
 
-            void onFailureResponseGetOpponentList();
+            void onFailureGetOpponentListResponse();
         }
         void getOpponents(long id, FighterDao fighterDao, onFinishedListener onFinishedListener);
     }

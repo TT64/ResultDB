@@ -17,10 +17,10 @@ public class GetAllOpponents implements OpponentActivityContract.Model {
                     @Override
                     public void accept(Fighter[] opponents) throws Exception {
                         if (opponents != null){
-                            onFinishedListener.onFinishedResponseGetOpponentList(opponents);
+                            onFinishedListener.onFinishedGetOpponentListResponse(opponents);
                         }
                         else
-                            onFinishedListener.onFailureResponseGetOpponentList();
+                            onFinishedListener.onFailureGetOpponentListResponse();
                     }
                 });
     }

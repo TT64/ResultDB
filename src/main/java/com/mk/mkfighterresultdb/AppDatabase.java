@@ -5,22 +5,19 @@ import android.arch.persistence.room.Database;
 import android.arch.persistence.room.Room;
 import android.arch.persistence.room.RoomDatabase;
 import android.content.Context;
-import android.graphics.Movie;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.Callable;
-import java.util.concurrent.Executors;
 
 import rx.Completable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action0;
+import rx.functions.Action1;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
-@Database(entities = {Fighter.class}, version = 1)
+@Database(entities = {Fighter.class, Result.class}, version = 1)
 public abstract class AppDatabase extends RoomDatabase {
 
     static String TAG = "TAG";
@@ -57,11 +54,10 @@ public abstract class AppDatabase extends RoomDatabase {
                                         Log.d(TAG, "call: insert");
                                     }
                                 })
-                                .onErrorComplete(new Func1<Throwable, Boolean>() {
+                                .doOnError(new Action1<Throwable>() {
                                     @Override
-                                    public Boolean call(Throwable throwable) {
+                                    public void call(Throwable throwable) {
                                         Log.d(TAG, "call: " + throwable.getMessage());
-                                        return null;
                                     }
                                 })
                                 .subscribe();

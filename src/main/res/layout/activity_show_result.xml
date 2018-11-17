@@ -4,38 +4,28 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".OpponentActivity">
+    tools:context=".ShowResultActivity">
 
     <android.support.v7.widget.Toolbar
-        android:id="@+id/addDataToolbar"
+        android:id="@+id/showResultToolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?attr/colorPrimary"
         android:minHeight="?attr/actionBarSize"
         android:theme="?attr/actionBarTheme" />
 
-    <com.simplecityapps.recyclerview_fastscroll.views.FastScrollRecyclerView
-        android:id="@+id/opponentList"
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/resultList"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/addDataToolbar"
+        android:layout_below="@id/showResultToolbar"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        app:fastScrollAutoHide="true"
-        app:fastScrollAutoHideDelay="1500"
-        app:fastScrollEnableThumbInactiveColor="true"
-        app:fastScrollPopupBackgroundSize="65dp"
-        app:fastScrollPopupBgColor="@android:color/darker_gray"
-        app:fastScrollPopupPosition="adjacent"
-        app:fastScrollPopupTextColor="@android:color/primary_text_dark"
-        app:fastScrollPopupTextSize="30sp"
-        app:fastScrollThumbColor="@android:color/black"
-        app:fastScrollThumbEnabled="true">
+        android:layout_marginTop="8dp">
 
-    </com.simplecityapps.recyclerview_fastscroll.views.FastScrollRecyclerView>
+    </android.support.v7.widget.RecyclerView>
 
 </RelativeLayout>

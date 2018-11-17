@@ -16,7 +16,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".OpponentActivity"></activity>
+        <activity android:name=".OpponentActivity" />
+        <activity android:name=".AddResultActivity" />
+        <activity android:name=".ShowResultActivity"></activity>
     </application>
 
 </manifest>

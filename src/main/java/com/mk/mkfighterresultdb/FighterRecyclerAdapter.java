@@ -3,20 +3,18 @@ package com.mk.mkfighterresultdb;
 import android.content.res.TypedArray;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.futuremind.recyclerviewfastscroll.SectionTitleProvider;
+import com.simplecityapps.recyclerview_fastscroll.views.FastScrollRecyclerView;
 
 
-public class FighterRecyclerAdapter extends RecyclerView.Adapter<FighterRecyclerAdapter.ViewHolder> implements SectionTitleProvider{
+public class FighterRecyclerAdapter extends RecyclerView.Adapter<FighterRecyclerAdapter.ViewHolder> implements FastScrollRecyclerView.SectionedAdapter{
 
     Fighter[] values;
-    String[] testValues = {"dada","dadada","nenen"};
     private TypedArray fighterPhoto;
     private RecyclerViewClickListener listener;
     long id;
@@ -31,7 +29,7 @@ public class FighterRecyclerAdapter extends RecyclerView.Adapter<FighterRecycler
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item, null);
+        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.fighter_item, null);
         return new ViewHolder(view);
     }
 
@@ -48,11 +46,10 @@ public class FighterRecyclerAdapter extends RecyclerView.Adapter<FighterRecycler
         return values.length;
     }
 
+    @NonNull
     @Override
-    public String getSectionTitle(int position) {
-        Log.d("da","dada");
+    public String getSectionName(int position) {
         return values[position].getName().substring(0, 1);
-        //return "S";
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
