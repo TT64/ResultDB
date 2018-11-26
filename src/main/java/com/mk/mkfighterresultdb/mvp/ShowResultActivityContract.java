@@ -10,6 +10,12 @@ public class ShowResultActivityContract {
 
     public interface Presenter extends MvpPresenter<View>{
         void requestViewData(FighterDao fighterDao, int firstId, int secondId);
+
+        void requestFirstFighter(FighterDao fighterDao, int firstId);
+
+        void requestSecondFighter(FighterDao fighterDao, int firstId);
+
+        void deleteResult(long id, int adapterPosition, FighterDao fighterDao);
     }
 
     public interface View extends MvpView{
@@ -18,21 +24,51 @@ public class ShowResultActivityContract {
 
         void onResponseSuccessRequestFighterList();
 
+        void onResponseSuccessRequestFirstFighter(List<Fighter> fighterList);
+
+        void onResponseSuccessRequestSecondFighter(List<Fighter> fighterList);
+
+        void onResponseErrorRequestFirstFighter();
+
+        void onResponseErrorRequestSecondFighter();
+
         void onResponseFailureRequestFighterList();
+
+        void onResponseSuccessDeleteResult(int position);
+
+        void onResponseFailureDeleteResult();
 
     }
 
     public interface Model{
 
-        public interface onFinishListener{
+        interface onFinishListener{
 
             void onFinishedResponseGetResultList(List<Result> results);
 
             void onFailureResponseGetResultList();
 
+            void onFinishedResponseFirstFighter(List<Fighter> fighterList);
+
+            void onFinishedResponseSecondFighter(List<Fighter> fighterList);
+
+            void onFailuredResponseFirstFighter();
+
+            void onFailureResponseSecondFighter();
+
+            void onFinishedResponseDeleteResult(int position);
+
+            void onFailureResponseDeleteResult();
+
         }
 
         void getResult(FighterDao fighterDao, int firstId, int secondId, onFinishListener onFinishListener);
+
+        void getFirstFighter(FighterDao fighterDao, int id, onFinishListener onFinishListener);
+
+        void getSecondFighter(FighterDao fighterDao, int id, onFinishListener onFinishListener);
+
+        void deleteCurrentResult(FighterDao fighterDao, long id, int position, onFinishListener onFinishListener);
 
     }
 }

@@ -18,7 +18,7 @@ public class AddResultActivityContract {
 
         void onSuccessAddDataResponse();
 
-        void onFaiilureAddDataResponse();
+        void onFailureAddDataResponse();
 
         void onEmptyFiled();
 
@@ -26,37 +26,15 @@ public class AddResultActivityContract {
 
         void onCheckStringFieldFailure();
 
-        void onFirstFighterMatchWinnerEdEmptyField();
-
-        void onSecondFighterMatchWinnerEdEmptyField();
-
-        void onFirstRoundWinnerEdEmptyField();
-
-        void onSecondRoundWinnerEdEmptyField();
-
-        void onFatalityEdEmptyField();
-
-        void onBrutalityEdEmptyField();
-
-        void onWithoutSpecialFinishEdEmptyField();
-
-        void onScoreEdEmptyField();
-
-        void onMatchCourseEdEmptyField();
     }
 
     public interface Model{
-        public interface onFinishedListener{
+        interface onFinishedListener{
             void onFinishAddDataResponse();
 
             void onFailureAddDataResponse();
         }
 
-        void addDataToDb(
-                Result result,
-                //int idFirstFighter, int idSecondFighter, int firstFighterMatchWinner, int secondFighterMatchWinner, int firstRoundWinner,
-                  //       int secondRoundWinner, int fatality, int brutality, int withoutSpecialFinish,
-                //         int score, String matchCourse,
-                FighterDao fighterDao, onFinishedListener onFinishedListener);
+        void addDataToDb(Result result, FighterDao fighterDao, onFinishedListener onFinishedListener);
     }
 }

@@ -11,6 +11,8 @@
         android:id="@+id/resConstLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:descendantFocusability="beforeDescendants"
+        android:focusableInTouchMode="true"
         android:layout_margin="12dp"
         android:background="@drawable/background">
 
@@ -24,6 +26,7 @@
             android:layout_marginStart="8dp"
             android:background="@drawable/edittext_pressed"
             android:ems="10"
+            android:enabled="false"
             android:inputType="numberDecimal"
             android:paddingBottom="4dp"
             android:paddingLeft="8dp"
@@ -44,6 +47,7 @@
             android:layout_marginStart="8dp"
             android:background="@drawable/edittext_pressed"
             android:ems="10"
+            android:enabled="false"
             android:inputType="numberDecimal"
             android:paddingBottom="4dp"
             android:paddingLeft="8dp"
@@ -64,6 +68,7 @@
             android:layout_marginStart="8dp"
             android:background="@drawable/edittext_pressed"
             android:ems="10"
+            android:enabled="false"
             android:inputType="numberDecimal"
             android:paddingBottom="4dp"
             android:paddingLeft="8dp"
@@ -75,7 +80,7 @@
             app:layout_constraintTop_toBottomOf="@+id/winFirstRoundTv" />
 
         <EditText
-            android:id="@+id/winSecondRoundResultEd"
+            android:id="@+id/winSecondRoundChgEd"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
@@ -84,6 +89,7 @@
             android:layout_marginStart="8dp"
             android:background="@drawable/edittext_pressed"
             android:ems="10"
+            android:enabled="false"
             android:inputType="numberDecimal"
             android:paddingBottom="4dp"
             android:paddingLeft="8dp"
@@ -102,12 +108,12 @@
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="4dp"
             android:text="@string/firstFighterWinner"
             android:textColor="@android:color/white"
             app:layout_constraintEnd_toStartOf="@+id/guideline2"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@+id/dateTv" />
 
         <TextView
             android:id="@+id/winMatchSecondFighterTv"
@@ -117,12 +123,12 @@
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="4dp"
             android:text="@string/secondFighterWinner"
             android:textColor="@android:color/white"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/guideline2"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@+id/dateTv" />
 
         <TextView
             android:id="@+id/winFirstRoundTv"
@@ -162,7 +168,7 @@
             app:layout_constraintGuide_percent="0.5" />
 
         <TextView
-            android:id="@+id/fatalityTv"
+            android:id="@+id/fatalityChgEd"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
@@ -186,6 +192,7 @@
             android:layout_marginStart="8dp"
             android:background="@drawable/edittext_pressed"
             android:ems="10"
+            android:enabled="false"
             android:inputType="numberDecimal"
             android:paddingBottom="4dp"
             android:paddingLeft="8dp"
@@ -194,7 +201,7 @@
             android:textColor="@android:color/white"
             app:layout_constraintEnd_toStartOf="@+id/guideline2"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/fatalityTv" />
+            app:layout_constraintTop_toBottomOf="@+id/fatalityChgEd" />
 
         <EditText
             android:id="@+id/withoutSpecFinResultEd"
@@ -206,6 +213,7 @@
             android:layout_marginStart="8dp"
             android:background="@drawable/edittext_pressed"
             android:ems="10"
+            android:enabled="false"
             android:inputType="numberDecimal"
             android:paddingBottom="4dp"
             android:paddingLeft="8dp"
@@ -232,7 +240,7 @@
             app:layout_constraintTop_toBottomOf="@+id/fatalityResultEd" />
 
         <TextView
-            android:id="@+id/brutalityTv"
+            android:id="@+id/brutalityChgEd"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
@@ -244,7 +252,7 @@
             android:textColor="@android:color/white"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/guideline2"
-            app:layout_constraintTop_toBottomOf="@+id/winSecondRoundResultEd" />
+            app:layout_constraintTop_toBottomOf="@+id/winSecondRoundChgEd" />
 
         <EditText
             android:id="@+id/brutalityResultEd"
@@ -256,6 +264,7 @@
             android:layout_marginStart="8dp"
             android:background="@drawable/edittext_pressed"
             android:ems="10"
+            android:enabled="false"
             android:inputType="numberDecimal"
             android:paddingBottom="4dp"
             android:paddingLeft="8dp"
@@ -264,7 +273,7 @@
             android:textColor="@android:color/white"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/guideline2"
-            app:layout_constraintTop_toBottomOf="@+id/brutalityTv" />
+            app:layout_constraintTop_toBottomOf="@+id/brutalityChgEd" />
 
         <TextView
             android:id="@+id/scoreTv"
@@ -291,6 +300,7 @@
             android:layout_marginStart="8dp"
             android:background="@drawable/edittext_pressed"
             android:ems="10"
+            android:enabled="false"
             android:inputType="numberDecimal"
             android:paddingBottom="4dp"
             android:paddingLeft="8dp"
@@ -312,6 +322,7 @@
             android:layout_marginStart="8dp"
             android:background="@drawable/edittext_pressed"
             android:ems="10"
+            android:enabled="false"
             android:inputType="numberDecimal"
             android:paddingBottom="4dp"
             android:paddingLeft="8dp"
@@ -337,6 +348,20 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/withoutSpecFinResultEd" />
+
+        <TextView
+            android:id="@+id/dateTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:textColor="@android:color/white"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
     </android.support.constraint.ConstraintLayout>
 

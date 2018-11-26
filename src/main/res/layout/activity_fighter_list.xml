@@ -7,7 +7,7 @@
     tools:context=".FighterListActivity">
 
     <android.support.v7.widget.Toolbar
-        android:id="@+id/addDataToolbar"
+        android:id="@+id/fighterListToolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?attr/colorPrimary"
@@ -18,7 +18,7 @@
         android:id="@+id/fighterList"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/addDataToolbar"
+        android:layout_below="@id/fighterListToolbar"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginLeft="8dp"

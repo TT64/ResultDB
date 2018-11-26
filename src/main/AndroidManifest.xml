@@ -18,7 +18,8 @@
         </activity>
         <activity android:name=".OpponentActivity" />
         <activity android:name=".AddResultActivity" />
-        <activity android:name=".ShowResultActivity"></activity>
+        <activity android:name=".ShowResultActivity" />
+        <activity android:name=".ChangeResultActivity"/>
     </application>
 
 </manifest>

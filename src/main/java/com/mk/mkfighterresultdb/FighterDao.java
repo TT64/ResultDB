@@ -1,6 +1,7 @@
 package com.mk.mkfighterresultdb;
 
 import android.arch.persistence.room.Dao;
+import android.arch.persistence.room.Delete;
 import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.Query;
 
@@ -23,12 +24,27 @@ public interface FighterDao {
     @Query("SELECT * FROM fighter WHERE id <> :id")
     Flowable<Fighter[]> getOpponent(long id);
 
+    @Query("SELECT * FROM fighter WHERE id = :id")
+    Flowable<List<Fighter>> getFighter(long id);
+
     @Query("SELECT * FROM result WHERE idFirstFighter = :idFirst AND idSecondFighter = :idSecond")
     Flowable<List<Result>> getResult(int idFirst, int idSecond);
+
+    @Query("DELETE FROM result WHERE id = :id")
+    void deleteResult(long id);
+
+    @Query("UPDATE result SET firstFighterMatchWinner = :firstFighterMatchWinner, secondFighterMatchWinner = :secondFighterMatchWinner," +
+            "firstRoundWinner = :firstRoundWinner, secondRoundWinner = :secondRoundWinner, fatality = :fatality," +
+            "brutality =:brutality, withoutSpecialFinish = :withoutSpecialFinish, score = :score," +
+            "matchCourse =:matchCourse " + "WHERE id = :id")
+    void changeResult(long id, double firstFighterMatchWinner, double secondFighterMatchWinner, double firstRoundWinner,
+                      double secondRoundWinner, double fatality, double brutality, double withoutSpecialFinish,
+                      double score, String matchCourse);
 
     @Insert(onConflict = REPLACE)
     void insertResultData(Result result);
 
     @Insert(onConflict = REPLACE)
     void insertAll(Fighter... fighter);
+
 }

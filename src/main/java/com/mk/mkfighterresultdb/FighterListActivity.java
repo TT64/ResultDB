@@ -8,13 +8,13 @@ import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.mk.mkfighterresultdb.mvp.FighterActivityContract;
 import com.mk.mkfighterresultdb.mvp.FighterActivityPresenter;
+import com.mk.mkfighterresultdb.mvp.ModelGetAllFighters;
 import com.simplecityapps.recyclerview_fastscroll.views.FastScrollRecyclerView;
-
-import java.util.concurrent.Executor;
 
 public class FighterListActivity extends AppCompatActivity implements FighterActivityContract.View {
 
@@ -22,6 +22,9 @@ public class FighterListActivity extends AppCompatActivity implements FighterAct
     FighterDao fighterDao;
 
     public TypedArray fighterPhoto;
+
+    FighterRecyclerAdapter adapter;
+    Fighter[] mFighters;
 
     FighterActivityPresenter presenter;
 
@@ -33,18 +36,28 @@ public class FighterListActivity extends AppCompatActivity implements FighterAct
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fighter_list);
         initRecyclerView();
+        initToolbar();
+
         fighterDao = AppDatabase.getDatabase(getApplicationContext()).fighterDao();
-        presenter = new FighterActivityPresenter(new GetAllFighters());
+        presenter = new FighterActivityPresenter(new ModelGetAllFighters());
     }
 
     @Override
     protected void onStart() {
         super.onStart();
 
-        initToolbar();
         presenter.attachView(this);
-        presenter.requestFighterList(fighterDao);
-        loading = ProgressDialog.show(this, getString(R.string.progressDialogTitle), getString(R.string.progressDialogMessage), false, false);
+        if (getLastNonConfigurationInstance() != null) {
+            mFighters = (Fighter[]) getLastCustomNonConfigurationInstance();
+        }
+
+        if (mFighters == null) {
+            presenter.requestFighterList(fighterDao);
+            loading = ProgressDialog.show(this, getString(R.string.progressDialogTitle), getString(R.string.progressDialogMessage), false, false);
+        }
+        else {
+            setAdapter();
+        }
     }
 
     @Override
@@ -52,6 +65,11 @@ public class FighterListActivity extends AppCompatActivity implements FighterAct
         super.onStop();
         if (presenter != null)
             presenter.destroy();
+    }
+
+    @Override
+    public Object onRetainCustomNonConfigurationInstance() {
+        return mFighters;
     }
 
     @Override
@@ -67,21 +85,15 @@ public class FighterListActivity extends AppCompatActivity implements FighterAct
 
     @Override
     public void setListToRecyclerView(final Fighter[] fighters) {
-        FighterRecyclerAdapter adapter = new FighterRecyclerAdapter(fighters, getPhotoFighterArray(), -1, new RecyclerViewClickListener() {
-            @Override
-            public void onItemClick(int position) {
-                Intent opponentId = new Intent(getApplicationContext(), OpponentActivity.class);
-                opponentId.putExtra("id", fighters[position].getId());
-                startActivity(opponentId);
-            }
-        });
-        recyclerView.setAdapter(adapter);
+        mFighters = fighters;
+        setAdapter();
     }
 
     private void initRecyclerView() {
         recyclerView = (FastScrollRecyclerView) findViewById(R.id.fighterList);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setHasFixedSize(true);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
     }
 
@@ -91,10 +103,22 @@ public class FighterListActivity extends AppCompatActivity implements FighterAct
     }
 
     private void initToolbar(){
-        Toolbar toolbar = (Toolbar)findViewById(R.id.addDataToolbar);
+        Toolbar toolbar = (Toolbar)findViewById(R.id.fighterListToolbar);
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null){
             getSupportActionBar().setTitle(R.string.titleFirstFighter);
         }
+    }
+
+    private void setAdapter(){
+        adapter = new FighterRecyclerAdapter(mFighters, getPhotoFighterArray(), -1, new RecyclerViewClickListener() {
+            @Override
+            public void onItemClick(int position) {
+                Intent opponentId = new Intent(getApplicationContext(), OpponentActivity.class);
+                opponentId.putExtra("id", mFighters[position].getId());
+                startActivity(opponentId);
+            }
+        });
+        recyclerView.setAdapter(adapter);
     }
 }

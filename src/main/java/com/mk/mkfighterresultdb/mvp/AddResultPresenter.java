@@ -1,7 +1,6 @@
 package com.mk.mkfighterresultdb.mvp;
 
 import android.text.TextUtils;
-import android.util.Log;
 
 import com.mk.mkfighterresultdb.FighterDao;
 import com.mk.mkfighterresultdb.Result;
@@ -63,10 +62,10 @@ public class AddResultPresenter extends BasePresenter<AddResultActivityContract.
 
     @Override
     public void onFailureAddDataResponse() {
-        getView().onFaiilureAddDataResponse();
+        getView().onFailureAddDataResponse();
     }
 
-    public boolean isValidNumValue(String value) {
+    public static boolean isValidNumValue(String value) {
         String patternName = "[0-9]+\\.*[0-9]*";
         Pattern p = Pattern.compile(patternName);
         Matcher matchValue = p.matcher(value.trim());
@@ -76,7 +75,7 @@ public class AddResultPresenter extends BasePresenter<AddResultActivityContract.
         //return matchValue.matches();
     }
 
-    public boolean isValidStringValue(String value) {
+    public static boolean isValidStringValue(String value) {
         String patternName = "[a-zA-ZА-Яа-я0-9]+\\.*[a-zA-ZА-Яа-я0-9]*";
         //String patternName = "^(?:\\w+(?:\\.\\w+))*\\w+(?:\\.\\w+)?$"; //^(?:\\d+(?:\\.\\d+)?,)*\\d+(?:\\.\\d+)?$;
         //String patternName = "^(?:\\d+(?:\\.\\d+)?,)*\\d+(?:\\.\\d+)?$"; //^(?:\\d+(?:\\.\\d+)?,)*\\d+(?:\\.\\d+)?$;
@@ -85,6 +84,5 @@ public class AddResultPresenter extends BasePresenter<AddResultActivityContract.
         String[] words = value.split("[^a-zA-ZА-Яа-я0-9]\\.");
         //return words.length == 1 && matchValue.matches();
         return matchValue.matches();
-
     }
 }

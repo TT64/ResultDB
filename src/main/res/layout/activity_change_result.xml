@@ -5,10 +5,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/background"
-    tools:context=".AddResultActivity">
+    tools:context=".ChangeResultActivity">
 
     <android.support.v7.widget.Toolbar
-        android:id="@+id/addDataToolbar"
+        android:id="@+id/chgDataToolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?attr/colorPrimary"
@@ -40,7 +40,7 @@
         app:layout_constraintBottom_toTopOf="@+id/winMatchSecondFighterChgEd"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/addDataToolbar"
+        app:layout_constraintTop_toBottomOf="@+id/chgDataToolbar"
         app:layout_constraintVertical_chainStyle="spread" />
 
     <EditText
@@ -263,8 +263,8 @@
         android:layout_marginRight="50dp"
         android:layout_marginStart="50dp"
         android:background="@color/colorPrimaryDark"
-        android:onClick="addResult"
-        android:text="@string/addBtn"
+        android:onClick="chgResult"
+        android:text="@string/chgBtn"
         android:textAllCaps="false"
         android:textColor="@android:color/white"
         app:layout_constraintBottom_toBottomOf="parent"

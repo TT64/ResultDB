@@ -3,12 +3,18 @@ package com.mk.mkfighterresultdb;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import com.mk.mkfighterresultdb.mvp.AddResultActivityContract;
 import com.mk.mkfighterresultdb.mvp.AddResultPresenter;
+import com.mk.mkfighterresultdb.mvp.ModelAddResult;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 public class AddResultActivity extends AppCompatActivity implements AddResultActivityContract.View {
 
@@ -16,9 +22,15 @@ public class AddResultActivity extends AppCompatActivity implements AddResultAct
 
     private EditText firstFighterMatchWinner, secondFighterMatchWinner, firstRoundWinner, secondRoundWinner,
             fatality, brutality, withoutSpecialFinish, score, matchCourse;
+
+    private Toolbar toolbar;
+
     int firstId = -1, secondId = -1;
     String firstFighterMatchWinnerValue, secondFighterMatchWinnerValue, firstRoundWinnerValue,secondRoundWinnerValue,
-            fatalityValue, brutalityValue, withoutSpecialFinishValue, scoreValue, matchCourseValue;
+            fatalityValue, brutalityValue, withoutSpecialFinishValue, scoreValue, matchCourseValue, curStringDate;
+
+    private long currentTimeMillis = System.currentTimeMillis();
+    private Date curDate = new Date(currentTimeMillis);
 
     FighterDao fighterDao;
     AddResultPresenter presenter;
@@ -28,9 +40,9 @@ public class AddResultActivity extends AppCompatActivity implements AddResultAct
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_result);
         initViews();
+        initToolbar();
         fighterDao = AppDatabase.getDatabase(getApplicationContext()).fighterDao();
-        presenter = new AddResultPresenter(new AddResult());
-
+        presenter = new AddResultPresenter(new ModelAddResult());
     }
 
     @Override
@@ -53,10 +65,12 @@ public class AddResultActivity extends AppCompatActivity implements AddResultAct
     @Override
     public void onSuccessAddDataResponse() {
         Toast.makeText(this, R.string.successDataAdd, Toast.LENGTH_SHORT).show();
+        Intent back = new Intent(this, FighterListActivity.class);
+        startActivity(back);
     }
 
     @Override
-    public void onFaiilureAddDataResponse() {
+    public void onFailureAddDataResponse() {
         Toast.makeText(this, R.string.errorMessage, Toast.LENGTH_SHORT).show();
     }
 
@@ -146,53 +160,43 @@ public class AddResultActivity extends AppCompatActivity implements AddResultAct
         matchCourse.requestFocus();
     }
 
-    @Override
-    public void onFirstFighterMatchWinnerEdEmptyField() {
-
-    }
-
-    @Override
-    public void onSecondFighterMatchWinnerEdEmptyField() {
-
-    }
-
-    @Override
-    public void onFirstRoundWinnerEdEmptyField() {
-
-    }
-
-    @Override
-    public void onSecondRoundWinnerEdEmptyField() {
-
-    }
-
-    @Override
-    public void onFatalityEdEmptyField() {
-
-    }
-
-    @Override
-    public void onBrutalityEdEmptyField() {
-
-    }
-
-    @Override
-    public void onWithoutSpecialFinishEdEmptyField() {
-
-    }
-
-    @Override
-    public void onScoreEdEmptyField() {
-
-    }
-
-    @Override
-    public void onMatchCourseEdEmptyField() {
-
-    }
-
     public void addResult(View view) {
 
+        prepareValues();
+
+        if (presenter.checkNumField(firstFighterMatchWinnerValue, 1) && presenter.checkNumField(secondFighterMatchWinnerValue, 2)
+                && presenter.checkNumField(firstRoundWinnerValue, 3) && presenter.checkNumField(secondRoundWinnerValue, 4)
+                && presenter.checkNumField(fatalityValue, 5) && presenter.checkNumField(brutalityValue, 6)
+                && presenter.checkNumField(withoutSpecialFinishValue, 7) && presenter.checkNumField(scoreValue, 8)
+                && presenter.checkStringField(matchCourseValue)){
+            Result result = new Result(firstId, secondId, Double.parseDouble(firstFighterMatchWinnerValue), Double.parseDouble(secondFighterMatchWinnerValue),
+                    Double.parseDouble(firstRoundWinnerValue), Double.parseDouble(secondRoundWinnerValue),Double.parseDouble(fatalityValue), Double.parseDouble(brutalityValue),
+                    Double.parseDouble(withoutSpecialFinishValue), Double.parseDouble(scoreValue), matchCourseValue, curStringDate);
+            presenter.addData(result, fighterDao);
+        }
+    }
+
+    private void initViews(){
+        firstFighterMatchWinner = (EditText) findViewById(R.id.winMatchFirstFighterChgEd);
+        secondFighterMatchWinner = (EditText) findViewById(R.id.winMatchSecondFighterChgEd);
+        firstRoundWinner = (EditText) findViewById(R.id.winFirstRoundChgEd);
+        secondRoundWinner = (EditText) findViewById(R.id.winSecondRoundChgEd);
+        fatality = (EditText) findViewById(R.id.fatalityChgEd);
+        brutality = (EditText) findViewById(R.id.brutalityChgEd);
+        withoutSpecialFinish = (EditText) findViewById(R.id.withoutSpecFinChgEd);
+        score = (EditText) findViewById(R.id.scoreChgEd);
+        matchCourse = (EditText) findViewById(R.id.matchCourseChgEd);
+    }
+
+    private void initToolbar(){
+        Toolbar toolbar = (Toolbar)findViewById(R.id.addDataToolbar);
+        setSupportActionBar(toolbar);
+        if (getSupportActionBar() != null){
+            getSupportActionBar().setTitle(R.string.addData);
+        }
+    }
+
+    private void prepareValues(){
         firstFighterMatchWinnerValue = firstFighterMatchWinner.getText().toString();
         secondFighterMatchWinnerValue = secondFighterMatchWinner.getText().toString();
         firstRoundWinnerValue = firstRoundWinner.getText().toString();
@@ -202,28 +206,6 @@ public class AddResultActivity extends AppCompatActivity implements AddResultAct
         withoutSpecialFinishValue = withoutSpecialFinish.getText().toString();
         scoreValue = score.getText().toString();
         matchCourseValue = matchCourse.getText().toString();
-
-        if (presenter.checkNumField(firstFighterMatchWinnerValue, 1) && presenter.checkNumField(secondFighterMatchWinnerValue, 2)
-                && presenter.checkNumField(firstRoundWinnerValue, 3) && presenter.checkNumField(secondRoundWinnerValue, 4)
-                && presenter.checkNumField(fatalityValue, 5) && presenter.checkNumField(brutalityValue, 6)
-                && presenter.checkNumField(withoutSpecialFinishValue, 7) && presenter.checkNumField(scoreValue, 8)
-                && presenter.checkStringField(matchCourseValue)){
-            Result result = new Result(firstId, secondId, Double.parseDouble(firstFighterMatchWinnerValue), Double.parseDouble(secondFighterMatchWinnerValue),
-                    Double.parseDouble(firstRoundWinnerValue), Double.parseDouble(secondRoundWinnerValue),Double.parseDouble(fatalityValue), Double.parseDouble(brutalityValue),
-                    Double.parseDouble(withoutSpecialFinishValue), Double.parseDouble(scoreValue), matchCourseValue);
-            presenter.addData(result, fighterDao);
-        }
-    }
-
-    private void initViews(){
-        firstFighterMatchWinner = (EditText) findViewById(R.id.winMatchFirstFighterEd);
-        secondFighterMatchWinner = (EditText) findViewById(R.id.winMatchSecondFighterEd);
-        firstRoundWinner = (EditText) findViewById(R.id.winFirstRoundEd);
-        secondRoundWinner = (EditText) findViewById(R.id.winSecondRoundResultEd);
-        fatality = (EditText) findViewById(R.id.fatalityTv);
-        brutality = (EditText) findViewById(R.id.brutalityTv);
-        withoutSpecialFinish = (EditText) findViewById(R.id.withoutSpecFinEd);
-        score = (EditText) findViewById(R.id.scoreEd);
-        matchCourse = (EditText) findViewById(R.id.matchCourseEd);
+        curStringDate = new SimpleDateFormat("dd.MM.yyyy", Locale.ENGLISH).format(curDate);
     }
 }

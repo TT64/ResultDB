@@ -29,7 +29,7 @@ public class FighterRecyclerAdapter extends RecyclerView.Adapter<FighterRecycler
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.fighter_item, null);
+        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.fighter_item, viewGroup, false);
         return new ViewHolder(view);
     }
 

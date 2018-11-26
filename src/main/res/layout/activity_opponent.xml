@@ -7,7 +7,7 @@
     tools:context=".OpponentActivity">
 
     <android.support.v7.widget.Toolbar
-        android:id="@+id/addDataToolbar"
+        android:id="@+id/opponentListToolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?attr/colorPrimary"
@@ -18,7 +18,7 @@
         android:id="@+id/opponentList"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/addDataToolbar"
+        android:layout_below="@id/opponentListToolbar"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginLeft="8dp"

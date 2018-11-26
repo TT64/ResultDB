@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.mk.mkfighterresultdb.mvp.ModelGetAllOpponents;
 import com.mk.mkfighterresultdb.mvp.OpponentActivityContract;
 import com.mk.mkfighterresultdb.mvp.OpponentPresenter;
 import com.simplecityapps.recyclerview_fastscroll.views.FastScrollRecyclerView;
@@ -37,7 +38,7 @@ public class OpponentActivity extends AppCompatActivity implements OpponentActiv
         setContentView(R.layout.activity_opponent);
         initRecyclerView();
         fighterDao = AppDatabase.getDatabase(getApplicationContext()).fighterDao();
-        presenter = new OpponentPresenter(new GetAllOpponents());
+        presenter = new OpponentPresenter(new ModelGetAllOpponents());
     }
 
     @Override
@@ -88,7 +89,7 @@ public class OpponentActivity extends AppCompatActivity implements OpponentActiv
     }
 
     private void initToolbar(){
-        Toolbar toolbar = (Toolbar)findViewById(R.id.addDataToolbar);
+        Toolbar toolbar = (Toolbar)findViewById(R.id.opponentListToolbar);
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null){
             getSupportActionBar().setTitle(R.string.titleSecondFighter);
@@ -99,6 +100,7 @@ public class OpponentActivity extends AppCompatActivity implements OpponentActiv
         recyclerView = (FastScrollRecyclerView) findViewById(R.id.opponentList);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setHasFixedSize(true);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
     }
 

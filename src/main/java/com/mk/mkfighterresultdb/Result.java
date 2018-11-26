@@ -6,7 +6,7 @@ import android.arch.persistence.room.PrimaryKey;
 @Entity
 public class Result {
 
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
     private long id;
 
     private int idFirstFighter;
@@ -31,8 +31,10 @@ public class Result {
 
     private String matchCourse;
 
+    private String recordDate;
+
     public Result(int idFirstFighter, int idSecondFighter, double firstFighterMatchWinner, double secondFighterMatchWinner, double firstRoundWinner,
-                  double secondRoundWinner, double fatality, double brutality, double withoutSpecialFinish, double score, String matchCourse){
+                  double secondRoundWinner, double fatality, double brutality, double withoutSpecialFinish, double score, String matchCourse, String recordDate){
         this.idFirstFighter = idFirstFighter;
         this.idSecondFighter = idSecondFighter;
         this.firstFighterMatchWinner = firstFighterMatchWinner;
@@ -44,6 +46,7 @@ public class Result {
         this.withoutSpecialFinish = withoutSpecialFinish;
         this.score = score;
         this.matchCourse = matchCourse;
+        this.recordDate = recordDate;
     }
 
     public long getId() {
@@ -140,5 +143,13 @@ public class Result {
 
     public void setMatchCourse(String matchCourse) {
         this.matchCourse = matchCourse;
+    }
+
+    public String getRecordDate() {
+        return recordDate;
+    }
+
+    public void setRecordDate(String recordDate) {
+        this.recordDate = recordDate;
     }
 }
