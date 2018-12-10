@@ -89,6 +89,7 @@ public class ShowResultActivity extends AppCompatActivity implements ShowResultA
             presenter.destroy();
             presenter.unsubscribeSubs();
         }
+
     }
 
     @Override
