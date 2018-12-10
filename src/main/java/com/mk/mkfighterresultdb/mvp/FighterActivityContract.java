@@ -9,6 +9,8 @@ public class FighterActivityContract {
 
         void requestFighterList(FighterDao fighterDao);
 
+        void unsubscribeSubs();
+
     }
 
     public interface View extends MvpView {
@@ -28,5 +30,7 @@ public class FighterActivityContract {
             void onFailureResponseGetFighterList();
         }
         void getAllFighters(FighterDao fighterDao, onFinishedListener onFinishedListener);
+
+        void unsubscribe();
     }
 }

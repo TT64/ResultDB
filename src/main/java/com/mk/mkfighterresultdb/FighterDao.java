@@ -27,7 +27,7 @@ public interface FighterDao {
     @Query("SELECT * FROM fighter WHERE id = :id")
     Flowable<List<Fighter>> getFighter(long id);
 
-    @Query("SELECT * FROM result WHERE idFirstFighter = :idFirst AND idSecondFighter = :idSecond")
+    @Query("SELECT * FROM result WHERE idFirstFighter = :idFirst AND idSecondFighter = :idSecond order by recordDate")
     Flowable<List<Result>> getResult(int idFirst, int idSecond);
 
     @Query("DELETE FROM result WHERE id = :id")
@@ -36,10 +36,10 @@ public interface FighterDao {
     @Query("UPDATE result SET firstFighterMatchWinner = :firstFighterMatchWinner, secondFighterMatchWinner = :secondFighterMatchWinner," +
             "firstRoundWinner = :firstRoundWinner, secondRoundWinner = :secondRoundWinner, fatality = :fatality," +
             "brutality =:brutality, withoutSpecialFinish = :withoutSpecialFinish, score = :score," +
-            "matchCourse =:matchCourse " + "WHERE id = :id")
+            "matchCourse =:matchCourse, recordDate =:recordDate WHERE id = :id")
     void changeResult(long id, double firstFighterMatchWinner, double secondFighterMatchWinner, double firstRoundWinner,
                       double secondRoundWinner, double fatality, double brutality, double withoutSpecialFinish,
-                      double score, String matchCourse);
+                      double score, String matchCourse, String recordDate);
 
     @Insert(onConflict = REPLACE)
     void insertResultData(Result result);

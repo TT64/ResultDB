@@ -9,9 +9,11 @@ public class ChangeResultContract {
 
         boolean checkStringField(String stringValue);
 
+        boolean checkDate(String dateValue);
+
         void requestChangeResult(FighterDao fighterDao, long id, double firstFighterMatchWinner, double secondFighterMatchWinner, double firstRoundWinner,
                                  double secondRoundWinner, double fatality, double brutality, double withoutSpecialFinish,
-                                 double score, String matchCourse);
+                                 double score, String matchCourse, String recordDate);
     }
 
     public interface View extends MvpView{
@@ -20,6 +22,8 @@ public class ChangeResultContract {
         void onCheckNumFieldFailure(int orderNumEd);
 
         void onCheckStringFieldFailure();
+
+        void onCheckDateFailure();
 
         void onSuccessChangeResult();
 
@@ -35,6 +39,6 @@ public class ChangeResultContract {
 
         void changeCurrentResult(FighterDao fighterDao, long id, double firstFighterMatchWinner, double secondFighterMatchWinner, double firstRoundWinner,
                                  double secondRoundWinner, double fatality, double brutality, double withoutSpecialFinish,
-                                 double score, String matchCourse, onFinishedListener onFinishedListener);
+                                 double score, String matchCourse, String recordDate, onFinishedListener onFinishedListener);
     }
 }

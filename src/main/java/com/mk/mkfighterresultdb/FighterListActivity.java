@@ -1,14 +1,23 @@
 package com.mk.mkfighterresultdb;
 
 import android.app.ProgressDialog;
+import android.app.SearchManager;
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.TypedArray;
+import android.os.PersistableBundle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.support.v7.widget.helper.ItemTouchHelper;
+import android.text.TextUtils;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.mk.mkfighterresultdb.mvp.FighterActivityContract;
@@ -19,24 +28,30 @@ import com.simplecityapps.recyclerview_fastscroll.views.FastScrollRecyclerView;
 public class FighterListActivity extends AppCompatActivity implements FighterActivityContract.View {
 
     String TAG = this.getClass().getSimpleName();
-    FighterDao fighterDao;
+    private FighterDao fighterDao;
 
-    public TypedArray fighterPhoto;
+    private String searchQuery;
 
-    FighterRecyclerAdapter adapter;
-    Fighter[] mFighters;
+    private FighterRecyclerAdapter adapter;
+    private Fighter[] mFighters;
 
     FighterActivityPresenter presenter;
 
     private FastScrollRecyclerView recyclerView;
     private ProgressDialog loading;
+    private SearchView searchView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        setTheme(R.style.AppTheme);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fighter_list);
         initRecyclerView();
         initToolbar();
+
+        if (savedInstanceState != null) {
+            searchQuery = savedInstanceState.getString(Constants.KEY_QUERY);
+        }
 
         fighterDao = AppDatabase.getDatabase(getApplicationContext()).fighterDao();
         presenter = new FighterActivityPresenter(new ModelGetAllFighters());
@@ -58,13 +73,64 @@ public class FighterListActivity extends AppCompatActivity implements FighterAct
         else {
             setAdapter();
         }
+
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        if (presenter != null)
+        if (presenter != null) {
             presenter.destroy();
+            presenter.unsubscribeSubs();
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.search_widget, menu);
+
+        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+        searchView.setMaxWidth(Integer.MAX_VALUE);
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                adapter.getFilter().filter(query);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String query) {
+                adapter.getFilter().filter(query);
+                return false;
+            }
+        });
+
+        if (!TextUtils.isEmpty(searchQuery)) {
+            searchView.setIconified(false);
+            searchView.setQuery(searchQuery, false);
+        }
+
+        return true;
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (!searchView.isIconified()) {
+            searchView.setIconified(true);
+            return;
+        }
+        super.onBackPressed();
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        if (!TextUtils.isEmpty(searchView.getQuery())) {
+            outState.putString(Constants.KEY_QUERY, searchView.getQuery().toString());
+        }
     }
 
     @Override
@@ -98,8 +164,7 @@ public class FighterListActivity extends AppCompatActivity implements FighterAct
     }
 
     private TypedArray getPhotoFighterArray(){
-        fighterPhoto = getResources().obtainTypedArray(R.array.fighterImage);
-        return fighterPhoto;
+        return getResources().obtainTypedArray(R.array.fighterImage);
     }
 
     private void initToolbar(){
@@ -121,4 +186,5 @@ public class FighterListActivity extends AppCompatActivity implements FighterAct
         });
         recyclerView.setAdapter(adapter);
     }
+
 }

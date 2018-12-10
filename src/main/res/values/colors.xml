@@ -2,6 +2,6 @@
 <resources>
     <color name="colorPrimary">#302a2a</color>
     <color name="colorPrimaryDark">#000000</color>
-    <color name="colorAccent">#FF4081</color>
+    <color name="colorAccent">#302a2a</color>
     <color name="background">#efecec</color>
 </resources>

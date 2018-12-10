@@ -1,24 +1,33 @@
 package com.mk.mkfighterresultdb;
 
 import android.support.annotation.NonNull;
+import android.support.constraint.ConstraintLayout;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class ResultRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
+public class ResultRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private static int EMPTY_VIEW = -1;
 
     private List<Result> values;
+    private List<Result> itemsPendingRemoval;
 
-    ResultRecyclerAdapter(List<Result> values){
+    private RecyclerViewButtonClick recyclerViewButtonClick;
+
+    ResultRecyclerAdapter(List<Result> values, RecyclerViewButtonClick recyclerViewButtonClick) {
+        itemsPendingRemoval = new ArrayList<>();
         this.values = values;
+        this.recyclerViewButtonClick = recyclerViewButtonClick;
     }
 
     @NonNull
@@ -26,11 +35,10 @@ public class ResultRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
         View view;
         RecyclerView.ViewHolder vh;
-        if (viewType == EMPTY_VIEW){
+        if (viewType == EMPTY_VIEW) {
             view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.result_empty_item, viewGroup, false);
             vh = new EmptyViewHolder(view);
-        }
-        else {
+        } else {
             view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.result_item, viewGroup, false);
             vh = new ViewHolder(view);
         }
@@ -41,17 +49,31 @@ public class ResultRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
         if (viewHolder instanceof ViewHolder) {
             ViewHolder vh = (ViewHolder) viewHolder;
-            Result currentResult = values.get(i);
-            (vh).firstFighterMatchWinner.setText(String.valueOf(currentResult.getFirstFighterMatchWinner()));
-            (vh).secondFighterMatchWinner.setText(String.valueOf(currentResult.getSecondFighterMatchWinner()));
-            (vh).firstRoundWinner.setText(String.valueOf(currentResult.getFirstRoundWinner()));
-            (vh).secondRoundWinner.setText(String.valueOf(currentResult.getSecondRoundWinner()));
-            (vh).fatality.setText(String.valueOf(currentResult.getFatality()));
-            (vh).brutality.setText(String.valueOf(currentResult.getBrutality()));
-            (vh).withoutSpecialFinish.setText(String.valueOf(currentResult.getWithoutSpecialFinish()));
-            (vh).score.setText(String.valueOf(currentResult.getScore()));
-            (vh).matchCourse.setText(String.valueOf(currentResult.getMatchCourse()));
-            (vh).recordDate.setText(String.valueOf(currentResult.getRecordDate()));
+            final Result currentResult = values.get(i);
+            if (!itemsPendingRemoval.contains(currentResult)) {
+                (vh).firstFighterMatchWinner.setText(String.valueOf(currentResult.getFirstFighterMatchWinner()));
+                (vh).secondFighterMatchWinner.setText(String.valueOf(currentResult.getSecondFighterMatchWinner()));
+                (vh).firstRoundWinner.setText(String.valueOf(currentResult.getFirstRoundWinner()));
+                (vh).secondRoundWinner.setText(String.valueOf(currentResult.getSecondRoundWinner()));
+                (vh).fatality.setText(String.valueOf(currentResult.getFatality()));
+                (vh).brutality.setText(String.valueOf(currentResult.getBrutality()));
+                (vh).withoutSpecialFinish.setText(String.valueOf(currentResult.getWithoutSpecialFinish()));
+                (vh).score.setText(String.valueOf(currentResult.getScore()));
+                (vh).matchCourse.setText(String.valueOf(currentResult.getMatchCourse()));
+                (vh).recordDate.setText(String.valueOf(currentResult.getRecordDate()));
+                (vh).viewForeground.setVisibility(View.VISIBLE);
+                //(vh).cancelBtn.setOnClickListener(null);
+            } else {
+                (vh).viewForeground.setVisibility(View.GONE);
+                (vh).viewBackround.setVisibility(View.VISIBLE);
+                /*(vh).cancelBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        itemsPendingRemoval.remove(currentResult);
+                        notifyItemChanged(values.indexOf(currentResult));
+                    }
+                });*/
+            }
         }
     }
 
@@ -64,17 +86,35 @@ public class ResultRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     public int getItemViewType(int position) {
         if (values.size() <= 0) {
             return EMPTY_VIEW;
-        }
-        else {
+        } else {
             return super.getItemViewType(position);
         }
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnCreateContextMenuListener{
+    public void pendingRemoval(int position) {
+        final Result item = values.get(position);
+        if (!itemsPendingRemoval.contains(item)) {
+            itemsPendingRemoval.add(item);
+            notifyItemChanged(position);
+        }
+    }
+
+    public void pendingCancelRemoval(int position) {
+        final Result item = values.get(position);
+        if (itemsPendingRemoval.contains(item)) {
+            itemsPendingRemoval.remove(item);
+            notifyItemChanged(values.indexOf(item));
+        }
+    }
+
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnCreateContextMenuListener, View.OnClickListener {
 
         private EditText firstFighterMatchWinner, secondFighterMatchWinner, firstRoundWinner, secondRoundWinner,
                 fatality, brutality, withoutSpecialFinish, score, matchCourse;
         private TextView recordDate;
+        private ImageView deleteBtn, cancelBtn, editBtn;
+        public CardView viewForeground;
+        ConstraintLayout viewBackround;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -89,14 +129,36 @@ public class ResultRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             score = itemView.findViewById(R.id.scoreResultEd);
             matchCourse = itemView.findViewById(R.id.matchCourseResultEd);
             recordDate = itemView.findViewById(R.id.dateTv);
+            viewForeground = itemView.findViewById(R.id.resCv);
+            viewBackround = itemView.findViewById(R.id.deleteLayout);
+            deleteBtn = itemView.findViewById(R.id.deleteImgBtn);
+            cancelBtn = itemView.findViewById(R.id.cancelImgBtn);
+            editBtn = itemView.findViewById(R.id.editImgBtn);
 
             itemView.setOnCreateContextMenuListener(this);
+            deleteBtn.setOnClickListener(this);
+            editBtn.setOnClickListener(this);
+            cancelBtn.setOnClickListener(this);
+
         }
 
         @Override
         public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
             menu.add(this.getAdapterPosition(), 1, 1, R.string.upd_menu_item);
             menu.add(this.getAdapterPosition(), 2, 2, R.string.del_menu_item);
+        }
+
+        @Override
+        public void onClick(View v) {
+            if (v.getId() == deleteBtn.getId()){
+                recyclerViewButtonClick.onButtonClick(getAdapterPosition(), 1);
+            }
+            if (v.getId() == editBtn.getId()){
+                recyclerViewButtonClick.onButtonClick(getAdapterPosition(), 2);
+            }
+            if (v.getId() == cancelBtn.getId()){
+                recyclerViewButtonClick.onButtonClick(getAdapterPosition(), 3);
+            }
         }
     }
 

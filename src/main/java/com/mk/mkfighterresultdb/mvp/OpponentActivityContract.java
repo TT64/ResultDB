@@ -9,6 +9,8 @@ public class OpponentActivityContract {
 
         void requestOpponentList(long id, FighterDao fighterDao);
 
+        void unsubscribeSubs();
+
     }
 
     public interface View extends MvpView {
@@ -29,5 +31,7 @@ public class OpponentActivityContract {
             void onFailureGetOpponentListResponse();
         }
         void getOpponents(long id, FighterDao fighterDao, onFinishedListener onFinishedListener);
+
+        void unsubscribe();
     }
 }

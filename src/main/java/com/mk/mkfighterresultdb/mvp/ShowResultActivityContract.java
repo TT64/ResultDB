@@ -16,6 +16,8 @@ public class ShowResultActivityContract {
         void requestSecondFighter(FighterDao fighterDao, int firstId);
 
         void deleteResult(long id, int adapterPosition, FighterDao fighterDao);
+
+        void unsubscribeSubs();
     }
 
     public interface View extends MvpView{
@@ -69,6 +71,8 @@ public class ShowResultActivityContract {
         void getSecondFighter(FighterDao fighterDao, int id, onFinishListener onFinishListener);
 
         void deleteCurrentResult(FighterDao fighterDao, long id, int position, onFinishListener onFinishListener);
+
+        void unsubscribe();
 
     }
 }

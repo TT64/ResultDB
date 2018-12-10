@@ -1,9 +1,18 @@
 package com.mk.mkfighterresultdb;
 
+import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.content.Intent;
+import android.os.Handler;
+import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -23,14 +32,10 @@ public class AddResultActivity extends AppCompatActivity implements AddResultAct
     private EditText firstFighterMatchWinner, secondFighterMatchWinner, firstRoundWinner, secondRoundWinner,
             fatality, brutality, withoutSpecialFinish, score, matchCourse;
 
-    private Toolbar toolbar;
-
     int firstId = -1, secondId = -1;
-    String firstFighterMatchWinnerValue, secondFighterMatchWinnerValue, firstRoundWinnerValue,secondRoundWinnerValue,
-            fatalityValue, brutalityValue, withoutSpecialFinishValue, scoreValue, matchCourseValue, curStringDate;
-
-    private long currentTimeMillis = System.currentTimeMillis();
-    private Date curDate = new Date(currentTimeMillis);
+    String firstFighterMatchWinnerValue, secondFighterMatchWinnerValue, firstRoundWinnerValue, secondRoundWinnerValue,
+            fatalityValue, brutalityValue, withoutSpecialFinishValue, scoreValue, matchCourseValue, recordDate, restoreTitle;
+    private boolean isDateSelected = false;
 
     FighterDao fighterDao;
     AddResultPresenter presenter;
@@ -39,20 +44,32 @@ public class AddResultActivity extends AppCompatActivity implements AddResultAct
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_result);
+
+        if (savedInstanceState != null) {
+            isDateSelected = savedInstanceState.getBoolean("isDateSelected");
+            restoreTitle = savedInstanceState.getString("title");
+        }
+
         initViews();
         initToolbar();
         fighterDao = AppDatabase.getDatabase(getApplicationContext()).fighterDao();
         presenter = new AddResultPresenter(new ModelAddResult());
+
     }
 
     @Override
     protected void onStart() {
         super.onStart();
 
+        if (!isDateSelected) {
+            initDatePicker();
+            isDateSelected = true;
+        }
         presenter.attachView(this);
         Intent getIntent = getIntent();
         firstId = getIntent.getIntExtra("firstFighterId", firstId);
         secondId = getIntent.getIntExtra("secondFighterId", secondId);
+
     }
 
     @Override
@@ -63,9 +80,30 @@ public class AddResultActivity extends AppCompatActivity implements AddResultAct
     }
 
     @Override
+    protected void onRestart() {
+        super.onRestart();
+        initDatePicker();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putBoolean("isDateSelected", isDateSelected);
+        outState.putString("title", getSupportActionBar().getTitle().toString());
+    }
+
+    @Override
     public void onSuccessAddDataResponse() {
         Toast.makeText(this, R.string.successDataAdd, Toast.LENGTH_SHORT).show();
         Intent back = new Intent(this, FighterListActivity.class);
+        back.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        back.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(back);
     }
 
@@ -116,7 +154,7 @@ public class AddResultActivity extends AppCompatActivity implements AddResultAct
 
     @Override
     public void onCheckNumFieldFailure(int orderNumEd) {
-        switch (orderNumEd){
+        switch (orderNumEd) {
             case 1:
                 firstFighterMatchWinner.setError(getString(R.string.numFieldCheckError));
                 firstFighterMatchWinner.requestFocus();
@@ -160,6 +198,11 @@ public class AddResultActivity extends AppCompatActivity implements AddResultAct
         matchCourse.requestFocus();
     }
 
+    @Override
+    public void onCheckDateFailure() {
+        Toast.makeText(this, R.string.dateCheckError, Toast.LENGTH_SHORT).show();
+    }
+
     public void addResult(View view) {
 
         prepareValues();
@@ -168,15 +211,15 @@ public class AddResultActivity extends AppCompatActivity implements AddResultAct
                 && presenter.checkNumField(firstRoundWinnerValue, 3) && presenter.checkNumField(secondRoundWinnerValue, 4)
                 && presenter.checkNumField(fatalityValue, 5) && presenter.checkNumField(brutalityValue, 6)
                 && presenter.checkNumField(withoutSpecialFinishValue, 7) && presenter.checkNumField(scoreValue, 8)
-                && presenter.checkStringField(matchCourseValue)){
+                && presenter.checkStringField(matchCourseValue) && presenter.checkDate(recordDate)) {
             Result result = new Result(firstId, secondId, Double.parseDouble(firstFighterMatchWinnerValue), Double.parseDouble(secondFighterMatchWinnerValue),
-                    Double.parseDouble(firstRoundWinnerValue), Double.parseDouble(secondRoundWinnerValue),Double.parseDouble(fatalityValue), Double.parseDouble(brutalityValue),
-                    Double.parseDouble(withoutSpecialFinishValue), Double.parseDouble(scoreValue), matchCourseValue, curStringDate);
+                    Double.parseDouble(firstRoundWinnerValue), Double.parseDouble(secondRoundWinnerValue), Double.parseDouble(fatalityValue), Double.parseDouble(brutalityValue),
+                    Double.parseDouble(withoutSpecialFinishValue), Double.parseDouble(scoreValue), matchCourseValue, recordDate);
             presenter.addData(result, fighterDao);
         }
     }
 
-    private void initViews(){
+    private void initViews() {
         firstFighterMatchWinner = (EditText) findViewById(R.id.winMatchFirstFighterChgEd);
         secondFighterMatchWinner = (EditText) findViewById(R.id.winMatchSecondFighterChgEd);
         firstRoundWinner = (EditText) findViewById(R.id.winFirstRoundChgEd);
@@ -188,15 +231,29 @@ public class AddResultActivity extends AppCompatActivity implements AddResultAct
         matchCourse = (EditText) findViewById(R.id.matchCourseChgEd);
     }
 
-    private void initToolbar(){
-        Toolbar toolbar = (Toolbar)findViewById(R.id.addDataToolbar);
+    private void initToolbar() {
+        Toolbar toolbar = (Toolbar) findViewById(R.id.addDataToolbar);
         setSupportActionBar(toolbar);
-        if (getSupportActionBar() != null){
-            getSupportActionBar().setTitle(R.string.addData);
+        if (getSupportActionBar() != null) {
+            if (!TextUtils.isEmpty(restoreTitle))
+                getSupportActionBar().setTitle(restoreTitle);
+            else
+                getSupportActionBar().setTitle(R.string.addData);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
     }
 
-    private void prepareValues(){
+    private void initDatePicker(){
+
+        DialogFragment dateFragment = new DatePickerDialogFragment();
+        Bundle args = new Bundle();
+        args.putInt(Constants.MODE, Constants.ADD_RESULT);
+        dateFragment.setArguments(args);
+        dateFragment.show(getSupportFragmentManager(), "Date");
+
+    }
+
+    private void prepareValues() {
         firstFighterMatchWinnerValue = firstFighterMatchWinner.getText().toString();
         secondFighterMatchWinnerValue = secondFighterMatchWinner.getText().toString();
         firstRoundWinnerValue = firstRoundWinner.getText().toString();
@@ -206,6 +263,18 @@ public class AddResultActivity extends AppCompatActivity implements AddResultAct
         withoutSpecialFinishValue = withoutSpecialFinish.getText().toString();
         scoreValue = score.getText().toString();
         matchCourseValue = matchCourse.getText().toString();
-        curStringDate = new SimpleDateFormat("dd.MM.yyyy", Locale.ENGLISH).format(curDate);
+    }
+
+    public void getDate(String date) {
+        recordDate = date;
+        //dateFragment = null;
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setTitle(getString(R.string.dateTitle) + " " + recordDate);
+        }
+    }
+
+    public void changeDate(MenuItem item) {
+        initDatePicker();
+        //dateFragment.show(this.getSupportFragmentManager(), "Date");
     }
 }

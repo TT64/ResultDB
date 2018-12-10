@@ -12,11 +12,13 @@ import io.reactivex.schedulers.Schedulers;
 
 public class ModelChangeResult implements ChangeResultContract.Model {
     @Override
-    public void changeCurrentResult(final FighterDao fighterDao, final long id, final double firstFighterMatchWinner, final double secondFighterMatchWinner, final double firstRoundWinner, final double secondRoundWinner, final double fatality, final double brutality, final double withoutSpecialFinish, final double score, final String matchCourse, final onFinishedListener onFinishedListener) {
+    public void changeCurrentResult(final FighterDao fighterDao, final long id, final double firstFighterMatchWinner, final double secondFighterMatchWinner, final double firstRoundWinner, final double secondRoundWinner,
+                                    final double fatality, final double brutality, final double withoutSpecialFinish, final double score, final String matchCourse, final String recordDate,
+                                    final onFinishedListener onFinishedListener) {
         Completable.fromCallable(new Callable<Object>() {
             @Override
             public Object call() throws Exception {
-                fighterDao.changeResult(id, firstFighterMatchWinner, secondFighterMatchWinner, firstRoundWinner, secondRoundWinner, fatality, brutality, withoutSpecialFinish, score, matchCourse);
+                fighterDao.changeResult(id, firstFighterMatchWinner, secondFighterMatchWinner, firstRoundWinner, secondRoundWinner, fatality, brutality, withoutSpecialFinish, score, matchCourse, recordDate);
                 return null;
             }
         })

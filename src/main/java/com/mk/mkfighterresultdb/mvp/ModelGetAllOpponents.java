@@ -4,16 +4,19 @@ import android.annotation.SuppressLint;
 
 import com.mk.mkfighterresultdb.Fighter;
 import com.mk.mkfighterresultdb.FighterDao;
-import com.mk.mkfighterresultdb.mvp.OpponentActivityContract;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.functions.Consumer;
 
 public class ModelGetAllOpponents implements OpponentActivityContract.Model {
+
+    private CompositeDisposable compositeDisposable = new CompositeDisposable();
+
     @SuppressLint("CheckResult")
     @Override
-    public void getOpponents(long id, FighterDao fighterDao, final onFinishedListener onFinishedListener) {
-        fighterDao.getOpponent(id)
+    public void getOpponents(final long id, final FighterDao fighterDao, final onFinishedListener onFinishedListener) {
+        compositeDisposable.add(fighterDao.getOpponent(id)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Consumer<Fighter[]>() {
                     @Override
@@ -24,6 +27,11 @@ public class ModelGetAllOpponents implements OpponentActivityContract.Model {
                         else
                             onFinishedListener.onFailureGetOpponentListResponse();
                     }
-                });
+                }));
+    }
+
+    @Override
+    public void unsubscribe() {
+        compositeDisposable.dispose();
     }
 }

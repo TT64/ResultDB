@@ -4,6 +4,10 @@ public class Constants {
     private Constants() {
     }
 
+    public static int ADD_RESULT = 1;
+    public static int CHANGE_RESULT = 2;
+    public static String MODE = "MODE";
+    public static String KEY_QUERY = "QUERY";
     public static String DB_NAME = "fighter_result_db";
     public static String HERO_NAME_1 = "Бо'Рай Чо";
     public static String HERO_NAME_2 = "Горо";

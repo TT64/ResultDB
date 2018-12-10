@@ -1,9 +1,13 @@
 package com.mk.mkfighterresultdb;
 
 import android.content.Intent;
+import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -24,12 +28,20 @@ public class ChangeResultActivity extends AppCompatActivity implements ChangeRes
     ChangeResultContract.Presenter presenter;
 
     String firstFighterMatchWinnerChgValue, secondFighterMatchWinnerChgValue, firstRoundWinnerChgValue, secondRoundWinnerChgValue,
-            fatalityChgValue, brutalityChgValue, withoutSpecialFinishChgValue, scoreChgValue, matchCourseChgValue;
+            fatalityChgValue, brutalityChgValue, withoutSpecialFinishChgValue, scoreChgValue, matchCourseChgValue, recordDate, restoreDate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_change_result);
+
+        if (savedInstanceState != null) {
+            recordDate = savedInstanceState.getString("title");
+            //restoreDate = savedInstanceState.getString("title");
+            //recordDate = restoreDate;
+            //recordDate = restoreDate;
+        }
+
         fighterDao = AppDatabase.getDatabase(getApplicationContext()).fighterDao();
         presenter = new ChangeResultPresenter(new ModelChangeResult());
         initViews();
@@ -52,13 +64,29 @@ public class ChangeResultActivity extends AppCompatActivity implements ChangeRes
         withoutSpecFinChgEd.setText(String.valueOf(getChangeData.getDoubleExtra("withoutSpecialFinishValue", 0)));
         scoreChgEd.setText(String.valueOf(getChangeData.getDoubleExtra("scoreValue", 0)));
         matchCourseChgEd.setText(String.valueOf(getChangeData.getStringExtra("matchCourseValue")));
+        //if (TextUtils.isEmpty(restoreDate))
+        if (TextUtils.isEmpty(recordDate))
+            getSupportActionBar().setTitle(getString(R.string.dateTitle) + " " + getChangeData.getStringExtra("recordDate"));
     }
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
+    protected void onStop() {
+        super.onStop();
         if (presenter != null)
             presenter.destroy();
+    }
+
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString("title", recordDate);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu, menu);
+        return super.onCreateOptionsMenu(menu);
     }
 
     @Override
@@ -148,9 +176,16 @@ public class ChangeResultActivity extends AppCompatActivity implements ChangeRes
     }
 
     @Override
+    public void onCheckDateFailure() {
+        Toast.makeText(this, R.string.dateCheckError, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
     public void onSuccessChangeResult() {
         Toast.makeText(this, R.string.successChangeResult, Toast.LENGTH_SHORT).show();
         Intent back = new Intent(this, FighterListActivity.class);
+        back.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        back.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(back);
     }
 
@@ -167,10 +202,10 @@ public class ChangeResultActivity extends AppCompatActivity implements ChangeRes
                 && presenter.checkNumField(firstRoundWinnerChgValue, 3) && presenter.checkNumField(secondRoundWinnerChgValue, 4)
                 && presenter.checkNumField(fatalityChgValue, 5) && presenter.checkNumField(brutalityChgValue, 6)
                 && presenter.checkNumField(withoutSpecialFinishChgValue, 7) && presenter.checkNumField(scoreChgValue, 8)
-                && presenter.checkStringField(matchCourseChgValue)) {
+                && presenter.checkStringField(matchCourseChgValue) && presenter.checkDate(recordDate)) {
             presenter.requestChangeResult(fighterDao, getChangeData.getLongExtra("id", -1), Double.parseDouble(firstFighterMatchWinnerChgValue), Double.parseDouble(secondFighterMatchWinnerChgValue),
                     Double.parseDouble(firstRoundWinnerChgValue), Double.parseDouble(secondRoundWinnerChgValue), Double.parseDouble(fatalityChgValue),
-                    Double.parseDouble(brutalityChgValue), Double.parseDouble(withoutSpecialFinishChgValue), Double.parseDouble(scoreChgValue), matchCourseChgValue);
+                    Double.parseDouble(brutalityChgValue), Double.parseDouble(withoutSpecialFinishChgValue), Double.parseDouble(scoreChgValue), matchCourseChgValue, recordDate);
         }
     }
 
@@ -189,8 +224,14 @@ public class ChangeResultActivity extends AppCompatActivity implements ChangeRes
     private void initToolbar(){
         Toolbar toolbar = (Toolbar)findViewById(R.id.chgDataToolbar);
         setSupportActionBar(toolbar);
-        if (getSupportActionBar() != null){
-            getSupportActionBar().setTitle(R.string.chgData);
+        if (getSupportActionBar() != null) {
+            if (!TextUtils.isEmpty(recordDate))
+            //if (!TextUtils.isEmpty(restoreDate))
+            //    getSupportActionBar().setTitle(getString(R.string.dateTitle) + " " + restoreDate);
+                getSupportActionBar().setTitle(getString(R.string.dateTitle) + " " + recordDate);
+            else
+                getSupportActionBar().setTitle(R.string.chgData);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
     }
 
@@ -204,5 +245,22 @@ public class ChangeResultActivity extends AppCompatActivity implements ChangeRes
         withoutSpecialFinishChgValue = withoutSpecFinChgEd.getText().toString();
         scoreChgValue = scoreChgEd.getText().toString();
         matchCourseChgValue = matchCourseChgEd.getText().toString();
+    }
+
+    public void getChangeDate(String date) {
+        recordDate = date;
+
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setTitle(getString(R.string.dateTitle) + " " + recordDate);
+        }
+
+    }
+
+    public void changeDate(MenuItem item) {
+        DialogFragment dateFragment = new DatePickerDialogFragment();
+        Bundle args = new Bundle();
+        args.putInt(Constants.MODE, Constants.CHANGE_RESULT);
+        dateFragment.setArguments(args);
+        dateFragment.show(this.getSupportFragmentManager(), "Date");
     }
 }

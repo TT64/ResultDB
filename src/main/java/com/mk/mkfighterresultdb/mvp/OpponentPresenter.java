@@ -17,6 +17,11 @@ public class OpponentPresenter extends BasePresenter<OpponentActivityContract.Vi
     }
 
     @Override
+    public void unsubscribeSubs() {
+        mModel.unsubscribe();
+    }
+
+    @Override
     public void onFinishedGetOpponentListResponse(Fighter[] opponents) {
         getView().onSuccessRequestOpponentListResponse();
         getView().setListToRecyclerView(opponents);

@@ -1,9 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
+<ScrollView android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
+    android:descendantFocusability="beforeDescendants"
+    android:focusableInTouchMode="true"
     android:background="@drawable/background"
     tools:context=".AddResultActivity">
 
@@ -240,6 +247,7 @@
         android:ems="10"
         android:hint="@string/matchCourse"
         android:inputType="textPersonName"
+        android:maxLength="20"
         android:paddingBottom="4dp"
         android:paddingLeft="8dp"
         android:paddingStart="8dp"
@@ -272,3 +280,4 @@
         app:layout_constraintStart_toStartOf="parent" />
 
 </android.support.constraint.ConstraintLayout>
+</ScrollView>

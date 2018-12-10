@@ -11,6 +11,8 @@ public class AddResultActivityContract {
 
         boolean checkStringField(String stringValue);
 
+        boolean checkDate(String dateValue);
+
         void addData(Result result, FighterDao fighterDao);
     }
 
@@ -25,6 +27,8 @@ public class AddResultActivityContract {
         void onCheckNumFieldFailure(int orderNumEd);
 
         void onCheckStringFieldFailure();
+
+        void onCheckDateFailure();
 
     }
 

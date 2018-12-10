@@ -17,6 +17,11 @@ public class FighterActivityPresenter extends BasePresenter<FighterActivityContr
     }
 
     @Override
+    public void unsubscribeSubs() {
+        mModel.unsubscribe();
+    }
+
+    @Override
     public void onFinishedResponseGetFighterList(Fighter[] fighters) {
         getView().onResponseSuccessRequestFighterList();
         getView().setListToRecyclerView(fighters);

@@ -1,27 +1,34 @@
 package com.mk.mkfighterresultdb.mvp;
 
 import android.annotation.SuppressLint;
+import android.util.Log;
 
 import com.mk.mkfighterresultdb.Fighter;
 import com.mk.mkfighterresultdb.FighterDao;
 import com.mk.mkfighterresultdb.Result;
+
+import org.reactivestreams.Subscriber;
+import org.reactivestreams.Subscription;
 
 import java.util.List;
 import java.util.concurrent.Callable;
 
 import io.reactivex.Completable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.functions.Action;
 import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 
 public class ModelOperateResult implements ShowResultActivityContract.Model {
 
+    private CompositeDisposable compositeDisposable = new CompositeDisposable();
+
     @SuppressLint("CheckResult")
     @Override
     public void getResult(FighterDao fighterDao, int firstId, int secondId, final onFinishListener onFinishListener) {
-        fighterDao.getResult(firstId, secondId)
-                .subscribeOn(Schedulers.io())
+        //fighterDao.getResult(firstId, secondId)
+        compositeDisposable.add(fighterDao.getResult(firstId, secondId)
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnError(new Consumer<Throwable>() {
                     @Override
@@ -31,17 +38,17 @@ public class ModelOperateResult implements ShowResultActivityContract.Model {
                 })
                 .subscribe(new Consumer<List<Result>>() {
                     @Override
-                    public void accept(List<Result> results) throws Exception {
-                        onFinishListener.onFinishedResponseGetResultList(results);
+                    public void accept(final List<Result> results) throws Exception {
+                        if (results != null)
+                            onFinishListener.onFinishedResponseGetResultList(results);
                     }
-                });
+                }));
     }
 
     @SuppressLint("CheckResult")
     @Override
     public void getFirstFighter(FighterDao fighterDao, int id, final onFinishListener onFinishListener) {
-        fighterDao.getFighter((long)id)
-                .subscribeOn(Schedulers.io())
+        compositeDisposable.add(fighterDao.getFighter((long) id)
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnError(new Consumer<Throwable>() {
                     @Override
@@ -54,19 +61,18 @@ public class ModelOperateResult implements ShowResultActivityContract.Model {
                     public void accept(List<Fighter> fighterList) throws Exception {
                         onFinishListener.onFinishedResponseFirstFighter(fighterList);
                     }
-                });
+                }));
     }
 
     @SuppressLint("CheckResult")
     @Override
     public void getSecondFighter(FighterDao fighterDao, int id, final onFinishListener onFinishListener) {
-        fighterDao.getFighter((long)id)
-                .subscribeOn(Schedulers.io())
+        compositeDisposable.add(fighterDao.getFighter((long) id)
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnError(new Consumer<Throwable>() {
                     @Override
                     public void accept(Throwable throwable) throws Exception {
-                           onFinishListener.onFailureResponseSecondFighter();
+                        onFinishListener.onFailureResponseSecondFighter();
                     }
                 })
                 .subscribe(new Consumer<List<Fighter>>() {
@@ -74,7 +80,7 @@ public class ModelOperateResult implements ShowResultActivityContract.Model {
                     public void accept(List<Fighter> fighterList) throws Exception {
                         onFinishListener.onFinishedResponseSecondFighter(fighterList);
                     }
-                });
+                }));
     }
 
     @Override
@@ -102,4 +108,10 @@ public class ModelOperateResult implements ShowResultActivityContract.Model {
                 })
                 .subscribe();
     }
+
+    @Override
+    public void unsubscribe() {
+        compositeDisposable.dispose();
+    }
+
 }

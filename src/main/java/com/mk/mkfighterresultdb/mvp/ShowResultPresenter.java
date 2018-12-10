@@ -1,7 +1,5 @@
 package com.mk.mkfighterresultdb.mvp;
 
-import android.util.Log;
-
 import com.mk.mkfighterresultdb.Fighter;
 import com.mk.mkfighterresultdb.FighterDao;
 import com.mk.mkfighterresultdb.Result;
@@ -34,6 +32,11 @@ public class ShowResultPresenter extends BasePresenter<ShowResultActivityContrac
     @Override
     public void deleteResult(long id, int adapterPosition, FighterDao fighterDao) {
         model.deleteCurrentResult(fighterDao, id, adapterPosition, this);
+    }
+
+    @Override
+    public void unsubscribeSubs() {
+        model.unsubscribe();
     }
 
     @Override
@@ -76,4 +79,5 @@ public class ShowResultPresenter extends BasePresenter<ShowResultActivityContrac
     public void onFailureResponseDeleteResult() {
         getView().onResponseFailureDeleteResult();
     }
+
 }

@@ -48,11 +48,23 @@ public class ChangeResultPresenter extends BasePresenter<ChangeResultContract.Vi
     }
 
     @Override
+    public boolean checkDate(String dateValue) {
+        boolean result;
+        if (!TextUtils.isEmpty(dateValue))
+            result = true;
+        else {
+            result = false;
+            getView().onCheckDateFailure();
+        }
+        return result;
+    }
+
+    @Override
     public void requestChangeResult(FighterDao fighterDao, long id, double firstFighterMatchWinner,
                                     double secondFighterMatchWinner, double firstRoundWinner, double secondRoundWinner,
-                                    double fatality, double brutality, double withoutSpecialFinish, double score, String matchCourse) {
+                                    double fatality, double brutality, double withoutSpecialFinish, double score, String matchCourse, String recordDate) {
         mModel.changeCurrentResult(fighterDao, id, firstFighterMatchWinner, secondFighterMatchWinner, firstRoundWinner, secondRoundWinner,
-        fatality, brutality, withoutSpecialFinish, score, matchCourse, this);
+        fatality, brutality, withoutSpecialFinish, score, matchCourse, recordDate,this);
     }
 
     @Override

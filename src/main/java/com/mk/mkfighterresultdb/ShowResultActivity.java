@@ -3,13 +3,14 @@ package com.mk.mkfighterresultdb;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.support.v7.widget.helper.ItemTouchHelper;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -20,17 +21,15 @@ import com.mk.mkfighterresultdb.mvp.ShowResultPresenter;
 
 import java.util.List;
 
-public class ShowResultActivity extends AppCompatActivity implements ShowResultActivityContract.View {
+public class ShowResultActivity extends AppCompatActivity implements ShowResultActivityContract.View, RecyclerItemTouchHelper.RecyclerItemTouchListener {
 
     String TAG = this.getClass().getSimpleName();
 
     RecyclerView recyclerView;
-    int firstId, secondId;
-    String firstFighterTitle, secondFighterTitle;
+    int firstId, secondId, swipePosition = -1;
+    String firstFighterTitle, secondFighterTitle, restoreTitle, toRestoredSwipePositions = "";
 
     FighterDao fighterDao;
-
-    AlertDialog.Builder confirmDialog;
 
     List<Result> resultList;
 
@@ -39,10 +38,19 @@ public class ShowResultActivity extends AppCompatActivity implements ShowResultA
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        setTheme(R.style.AppTheme);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show_result);
+
+        if (savedInstanceState != null) {
+            swipePosition = savedInstanceState.getInt("swipePosition");
+            toRestoredSwipePositions = savedInstanceState.getString("toRestoredSwipePositions");
+            restoreTitle = savedInstanceState.getString("title");
+        }
+
         initToolbar();
         initRecyclerView();
+        initTouchHelper();
         fighterDao = AppDatabase.getDatabase(getApplicationContext()).fighterDao();
         presenter = new ShowResultPresenter(new ModelOperateResult());
     }
@@ -54,16 +62,59 @@ public class ShowResultActivity extends AppCompatActivity implements ShowResultA
         firstId = getIntent.getIntExtra("firstFighterId", firstId);
         secondId = getIntent.getIntExtra("secondFighterId", secondId);
         presenter.attachView(this);
-        presenter.requestFirstFighter(fighterDao, firstId);
-        presenter.requestSecondFighter(fighterDao, secondId);
-        presenter.requestViewData(fighterDao, firstId, secondId);
+
+        if (getLastNonConfigurationInstance() != null) {
+            resultList = (List<Result>) getLastCustomNonConfigurationInstance();
+        }
+
+        if (resultList == null) {
+            presenter.requestFirstFighter(fighterDao, firstId);
+            presenter.requestSecondFighter(fighterDao, secondId);
+            presenter.requestViewData(fighterDao, firstId, secondId);
+        } else {
+            setAdapter();
+            if (swipePosition != -1) {
+                String[] swipedPosition = toRestoredSwipePositions.split(",");
+                for (String swPos : swipedPosition) {
+                    adapter.pendingRemoval(Integer.parseInt(swPos));
+                }
+            }
+        }
+
+        //presenter.requestFirstFighter(fighterDao, firstId);
+        //presenter.requestSecondFighter(fighterDao, secondId);
+        //presenter.requestViewData(fighterDao, firstId, secondId);
     }
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        if (presenter != null)
+    protected void onStop() {
+        super.onStop();
+        if (presenter != null) {
             presenter.destroy();
+            presenter.unsubscribeSubs();
+        }
+    }
+
+    @Override
+    public Object onRetainCustomNonConfigurationInstance() {
+        return resultList;
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt("swipePosition", TextUtils.isEmpty(toRestoredSwipePositions) ? -1 : swipePosition);
+        outState.putString("toRestoredSwipePositions", toRestoredSwipePositions);
+        outState.putString("title", getSupportActionBar().getTitle().toString());
+    }
+
+    @Override
+    public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction, int position) {
+        if (viewHolder instanceof ResultRecyclerAdapter.ViewHolder) {
+            adapter.pendingRemoval(viewHolder.getAdapterPosition());
+            swipePosition = viewHolder.getAdapterPosition();
+            toRestoredSwipePositions += String.valueOf(swipePosition) + ",";
+        }
     }
 
     @Override
@@ -73,8 +124,17 @@ public class ShowResultActivity extends AppCompatActivity implements ShowResultA
 
     @Override
     public void onResponseSuccessRequestFighterList() {
-        adapter = new ResultRecyclerAdapter(resultList);
-        recyclerView.setAdapter(adapter);
+        /*adapter = new ResultRecyclerAdapter(resultList, new RecyclerViewButtonClick() {
+            @Override
+            public void onButtonClick(int position, int order) {
+                if (order == 1)
+                    presenter.deleteResult(adapter.getItemId(position), position, fighterDao);
+                else
+                    changeResult(position);
+            }
+        });
+        recyclerView.setAdapter(adapter);*/
+        setAdapter();
         if (getSupportActionBar() != null)
             getSupportActionBar().setTitle(firstFighterTitle + " vs " + secondFighterTitle);
     }
@@ -133,14 +193,22 @@ public class ShowResultActivity extends AppCompatActivity implements ShowResultA
     private void initToolbar() {
         Toolbar toolbar = findViewById(R.id.showResultToolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        if (!TextUtils.isEmpty(restoreTitle))
+            getSupportActionBar().setTitle(restoreTitle);
     }
 
-    public void initRecyclerView() {
+    private void initRecyclerView() {
         recyclerView = (RecyclerView) findViewById(R.id.resultList);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setHasFixedSize(true);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
+    }
+
+    private void initTouchHelper() {
+        ItemTouchHelper.SimpleCallback simpleCallback = new RecyclerItemTouchHelper(0, ItemTouchHelper.LEFT, this);
+        new ItemTouchHelper(simpleCallback).attachToRecyclerView(recyclerView);
     }
 
     private void deleteResult(final int position) {
@@ -175,6 +243,29 @@ public class ShowResultActivity extends AppCompatActivity implements ShowResultA
         changeIntent.putExtra("withoutSpecialFinishValue", resultList.get(position).getWithoutSpecialFinish());
         changeIntent.putExtra("scoreValue", resultList.get(position).getScore());
         changeIntent.putExtra("matchCourseValue", resultList.get(position).getMatchCourse());
+        changeIntent.putExtra("recordDate", resultList.get(position).getRecordDate());
         startActivity(changeIntent);
+    }
+
+    private void cancelDeleteResult(int position) {
+        adapter.pendingCancelRemoval(position);
+        String deleteString = "";
+        deleteString = String.valueOf(position) + ",";
+        toRestoredSwipePositions = toRestoredSwipePositions.replace(deleteString, "");
+    }
+
+    private void setAdapter() {
+        adapter = new ResultRecyclerAdapter(resultList, new RecyclerViewButtonClick() {
+            @Override
+            public void onButtonClick(int position, int order) {
+                if (order == 1)
+                    presenter.deleteResult(adapter.getItemId(position), position, fighterDao);
+                else if (order == 2)
+                    changeResult(position);
+                else
+                    cancelDeleteResult(position);
+            }
+        });
+        recyclerView.setAdapter(adapter);
     }
 }
