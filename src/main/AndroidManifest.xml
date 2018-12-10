@@ -23,7 +23,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".OpponentActivity"
+        <activity
+            android:name=".OpponentActivity"
             android:launchMode="singleTask">
 
             <meta-data
@@ -37,23 +38,23 @@
         <activity
             android:name=".AddResultActivity"
             android:parentActivityName=".FighterListActivity">
-            <!--android:noHistory="true" -->
             <meta-data
                 android:name="android.support.parent_activity"
                 android:value=".FighterListActivity" />
         </activity>
-        <activity android:name=".ShowResultActivity"
+        <activity
+            android:name=".ShowResultActivity"
             android:parentActivityName=".FighterListActivity">
-            <!--android:configChanges="orientation|screenSize|keyboardHidden"-->
-        <meta-data
-            android:name="android.support.parent_activity"
-            android:value=".FighterListActivity" />
+            <meta-data
+                android:name="android.support.parent_activity"
+                android:value=".FighterListActivity" />
         </activity>
-        <activity android:name=".ChangeResultActivity"
+        <activity
+            android:name=".ChangeResultActivity"
             android:parentActivityName=".FighterListActivity">
-        <meta-data
-            android:name="android.support.parent_activity"
-            android:value=".FighterListActivity" />
+            <meta-data
+                android:name="android.support.parent_activity"
+                android:value=".FighterListActivity" />
         </activity>
     </application>
 

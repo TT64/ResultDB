@@ -1,16 +1,11 @@
 package com.mk.mkfighterresultdb;
 
-import android.app.Fragment;
-import android.app.FragmentTransaction;
 import android.content.Intent;
-import android.os.Handler;
+import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -20,10 +15,6 @@ import android.widget.Toast;
 import com.mk.mkfighterresultdb.mvp.AddResultActivityContract;
 import com.mk.mkfighterresultdb.mvp.AddResultPresenter;
 import com.mk.mkfighterresultdb.mvp.ModelAddResult;
-
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
 
 public class AddResultActivity extends AppCompatActivity implements AddResultActivityContract.View {
 
@@ -267,7 +258,6 @@ public class AddResultActivity extends AppCompatActivity implements AddResultAct
 
     public void getDate(String date) {
         recordDate = date;
-        //dateFragment = null;
         if (getSupportActionBar() != null) {
             getSupportActionBar().setTitle(getString(R.string.dateTitle) + " " + recordDate);
         }
@@ -275,6 +265,5 @@ public class AddResultActivity extends AppCompatActivity implements AddResultAct
 
     public void changeDate(MenuItem item) {
         initDatePicker();
-        //dateFragment.show(this.getSupportFragmentManager(), "Date");
     }
 }

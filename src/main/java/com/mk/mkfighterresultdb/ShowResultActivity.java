@@ -3,15 +3,14 @@ package com.mk.mkfighterresultdb;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Toast;
 
@@ -81,9 +80,6 @@ public class ShowResultActivity extends AppCompatActivity implements ShowResultA
             }
         }
 
-        //presenter.requestFirstFighter(fighterDao, firstId);
-        //presenter.requestSecondFighter(fighterDao, secondId);
-        //presenter.requestViewData(fighterDao, firstId, secondId);
     }
 
     @Override
@@ -124,16 +120,6 @@ public class ShowResultActivity extends AppCompatActivity implements ShowResultA
 
     @Override
     public void onResponseSuccessRequestFighterList() {
-        /*adapter = new ResultRecyclerAdapter(resultList, new RecyclerViewButtonClick() {
-            @Override
-            public void onButtonClick(int position, int order) {
-                if (order == 1)
-                    presenter.deleteResult(adapter.getItemId(position), position, fighterDao);
-                else
-                    changeResult(position);
-            }
-        });
-        recyclerView.setAdapter(adapter);*/
         setAdapter();
         if (getSupportActionBar() != null)
             getSupportActionBar().setTitle(firstFighterTitle + " vs " + secondFighterTitle);

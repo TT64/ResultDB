@@ -1,9 +1,9 @@
 package com.mk.mkfighterresultdb;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.Menu;
@@ -28,7 +28,7 @@ public class ChangeResultActivity extends AppCompatActivity implements ChangeRes
     ChangeResultContract.Presenter presenter;
 
     String firstFighterMatchWinnerChgValue, secondFighterMatchWinnerChgValue, firstRoundWinnerChgValue, secondRoundWinnerChgValue,
-            fatalityChgValue, brutalityChgValue, withoutSpecialFinishChgValue, scoreChgValue, matchCourseChgValue, recordDate, restoreDate;
+            fatalityChgValue, brutalityChgValue, withoutSpecialFinishChgValue, scoreChgValue, matchCourseChgValue, recordDate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,9 +37,6 @@ public class ChangeResultActivity extends AppCompatActivity implements ChangeRes
 
         if (savedInstanceState != null) {
             recordDate = savedInstanceState.getString("title");
-            //restoreDate = savedInstanceState.getString("title");
-            //recordDate = restoreDate;
-            //recordDate = restoreDate;
         }
 
         fighterDao = AppDatabase.getDatabase(getApplicationContext()).fighterDao();
@@ -64,9 +61,10 @@ public class ChangeResultActivity extends AppCompatActivity implements ChangeRes
         withoutSpecFinChgEd.setText(String.valueOf(getChangeData.getDoubleExtra("withoutSpecialFinishValue", 0)));
         scoreChgEd.setText(String.valueOf(getChangeData.getDoubleExtra("scoreValue", 0)));
         matchCourseChgEd.setText(String.valueOf(getChangeData.getStringExtra("matchCourseValue")));
-        //if (TextUtils.isEmpty(restoreDate))
-        if (TextUtils.isEmpty(recordDate))
+        if (TextUtils.isEmpty(recordDate)) {
+            recordDate = getChangeData.getStringExtra("recordDate");
             getSupportActionBar().setTitle(getString(R.string.dateTitle) + " " + getChangeData.getStringExtra("recordDate"));
+        }
     }
 
     @Override
@@ -226,8 +224,6 @@ public class ChangeResultActivity extends AppCompatActivity implements ChangeRes
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
             if (!TextUtils.isEmpty(recordDate))
-            //if (!TextUtils.isEmpty(restoreDate))
-            //    getSupportActionBar().setTitle(getString(R.string.dateTitle) + " " + restoreDate);
                 getSupportActionBar().setTitle(getString(R.string.dateTitle) + " " + recordDate);
             else
                 getSupportActionBar().setTitle(R.string.chgData);

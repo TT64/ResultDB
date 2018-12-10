@@ -62,17 +62,9 @@ public class ResultRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                 (vh).matchCourse.setText(String.valueOf(currentResult.getMatchCourse()));
                 (vh).recordDate.setText(String.valueOf(currentResult.getRecordDate()));
                 (vh).viewForeground.setVisibility(View.VISIBLE);
-                //(vh).cancelBtn.setOnClickListener(null);
             } else {
                 (vh).viewForeground.setVisibility(View.GONE);
-                (vh).viewBackround.setVisibility(View.VISIBLE);
-                /*(vh).cancelBtn.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        itemsPendingRemoval.remove(currentResult);
-                        notifyItemChanged(values.indexOf(currentResult));
-                    }
-                });*/
+                (vh).viewBackground.setVisibility(View.VISIBLE);
             }
         }
     }
@@ -113,8 +105,8 @@ public class ResultRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                 fatality, brutality, withoutSpecialFinish, score, matchCourse;
         private TextView recordDate;
         private ImageView deleteBtn, cancelBtn, editBtn;
+        private ConstraintLayout viewBackground;
         public CardView viewForeground;
-        ConstraintLayout viewBackround;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -130,7 +122,7 @@ public class ResultRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             matchCourse = itemView.findViewById(R.id.matchCourseResultEd);
             recordDate = itemView.findViewById(R.id.dateTv);
             viewForeground = itemView.findViewById(R.id.resCv);
-            viewBackround = itemView.findViewById(R.id.deleteLayout);
+            viewBackground = itemView.findViewById(R.id.deleteLayout);
             deleteBtn = itemView.findViewById(R.id.deleteImgBtn);
             cancelBtn = itemView.findViewById(R.id.cancelImgBtn);
             editBtn = itemView.findViewById(R.id.editImgBtn);
@@ -150,14 +142,18 @@ public class ResultRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
         @Override
         public void onClick(View v) {
-            if (v.getId() == deleteBtn.getId()){
-                recyclerViewButtonClick.onButtonClick(getAdapterPosition(), 1);
-            }
-            if (v.getId() == editBtn.getId()){
-                recyclerViewButtonClick.onButtonClick(getAdapterPosition(), 2);
-            }
-            if (v.getId() == cancelBtn.getId()){
-                recyclerViewButtonClick.onButtonClick(getAdapterPosition(), 3);
+            switch (v.getId()) {
+                case R.id.deleteImgBtn:
+                    recyclerViewButtonClick.onButtonClick(getAdapterPosition(), 1);
+                    break;
+                case R.id.editImgBtn:
+                    recyclerViewButtonClick.onButtonClick(getAdapterPosition(), 2);
+                    break;
+                case R.id.cancelImgBtn:
+                    recyclerViewButtonClick.onButtonClick(getAdapterPosition(), 3);
+                    break;
+                default:
+                    break;
             }
         }
     }
