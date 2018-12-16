@@ -4,27 +4,28 @@ import android.text.TextUtils;
 
 import com.mk.mkfighterresultdb.FighterDao;
 
+import javax.inject.Inject;
 
 public class ChangeResultPresenter extends BasePresenter<ChangeResultContract.View> implements ChangeResultContract.Presenter, ChangeResultContract.Model.onFinishedListener {
 
     private ChangeResultContract.Model mModel;
 
-    public ChangeResultPresenter(ChangeResultContract.Model model){
+    @Inject
+    ChangeResultPresenter(ChangeResultContract.Model model) {
         this.mModel = model;
     }
 
     @Override
     public boolean checkNumField(String numValue, int orderNumEd) {
         boolean result = false;
-        if (!TextUtils.isEmpty(numValue.trim())){
+        if (!TextUtils.isEmpty(numValue.trim())) {
             if (AddResultPresenter.isValidNumValue(numValue))
                 result = true;
             else {
                 result = false;
                 getView().onCheckNumFieldFailure(orderNumEd);
             }
-        }
-        else {
+        } else {
             getView().onEmptyFiled();
         }
         return result;
@@ -33,15 +34,14 @@ public class ChangeResultPresenter extends BasePresenter<ChangeResultContract.Vi
     @Override
     public boolean checkStringField(String stringValue) {
         boolean result = false;
-        if (!TextUtils.isEmpty(stringValue.trim())){
+        if (!TextUtils.isEmpty(stringValue.trim())) {
             if (AddResultPresenter.isValidStringValue(stringValue))
                 result = true;
             else {
                 result = false;
                 getView().onCheckStringFieldFailure();
             }
-        }
-        else {
+        } else {
             getView().onEmptyFiled();
         }
         return result;
@@ -64,7 +64,7 @@ public class ChangeResultPresenter extends BasePresenter<ChangeResultContract.Vi
                                     double secondFighterMatchWinner, double firstRoundWinner, double secondRoundWinner,
                                     double fatality, double brutality, double withoutSpecialFinish, double score, String matchCourse, String recordDate) {
         mModel.changeCurrentResult(fighterDao, id, firstFighterMatchWinner, secondFighterMatchWinner, firstRoundWinner, secondRoundWinner,
-        fatality, brutality, withoutSpecialFinish, score, matchCourse, recordDate,this);
+                fatality, brutality, withoutSpecialFinish, score, matchCourse, recordDate, this);
     }
 
     @Override

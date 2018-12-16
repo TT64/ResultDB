@@ -14,26 +14,31 @@ import android.text.TextUtils;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-import com.mk.mkfighterresultdb.mvp.ModelOperateResult;
+import com.mk.mkfighterresultdb.di.DaggerShowResultActivityComponent;
 import com.mk.mkfighterresultdb.mvp.ShowResultActivityContract;
 import com.mk.mkfighterresultdb.mvp.ShowResultPresenter;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 public class ShowResultActivity extends AppCompatActivity implements ShowResultActivityContract.View, RecyclerItemTouchHelper.RecyclerItemTouchListener {
 
     String TAG = this.getClass().getSimpleName();
 
-    RecyclerView recyclerView;
-    int firstId, secondId, swipePosition = -1;
-    String firstFighterTitle, secondFighterTitle, restoreTitle, toRestoredSwipePositions = "";
-
+    @Inject
     FighterDao fighterDao;
 
-    List<Result> resultList;
-
+    @Inject
     ShowResultPresenter presenter;
-    ResultRecyclerAdapter adapter;
+
+    private int firstId, secondId, swipePosition = -1;
+    private String firstFighterTitle, secondFighterTitle, restoreTitle, toRestoredSwipePositions = "";
+
+    private List<Result> resultList;
+
+    private RecyclerView recyclerView;
+    private ResultRecyclerAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,8 +55,10 @@ public class ShowResultActivity extends AppCompatActivity implements ShowResultA
         initToolbar();
         initRecyclerView();
         initTouchHelper();
-        fighterDao = AppDatabase.getDatabase(getApplicationContext()).fighterDao();
-        presenter = new ShowResultPresenter(new ModelOperateResult());
+
+        DaggerShowResultActivityComponent.builder()
+                .appComponent(((App) getApplicationContext()).getAppComponent())
+                .build().inject(this);
     }
 
     @Override
@@ -89,7 +96,6 @@ public class ShowResultActivity extends AppCompatActivity implements ShowResultA
             presenter.destroy();
             presenter.unsubscribeSubs();
         }
-
     }
 
     @Override

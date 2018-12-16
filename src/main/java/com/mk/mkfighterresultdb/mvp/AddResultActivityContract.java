@@ -5,7 +5,7 @@ import com.mk.mkfighterresultdb.Result;
 
 public class AddResultActivityContract {
 
-    public interface Presenter extends MvpPresenter<View>{
+    public interface Presenter extends MvpPresenter<View> {
 
         boolean checkNumField(String numValue, int orderNumEd);
 
@@ -16,7 +16,7 @@ public class AddResultActivityContract {
         void addData(Result result, FighterDao fighterDao);
     }
 
-    public interface View extends MvpView{
+    public interface View extends MvpView {
 
         void onSuccessAddDataResponse();
 
@@ -32,8 +32,8 @@ public class AddResultActivityContract {
 
     }
 
-    public interface Model{
-        interface onFinishedListener{
+    public interface Model {
+        interface onFinishedListener {
             void onFinishAddDataResponse();
 
             void onFailureAddDataResponse();

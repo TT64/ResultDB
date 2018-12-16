@@ -6,17 +6,20 @@ import com.mk.mkfighterresultdb.Result;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 public class ShowResultPresenter extends BasePresenter<ShowResultActivityContract.View> implements ShowResultActivityContract.Presenter, ShowResultActivityContract.Model.onFinishListener {
 
     private ShowResultActivityContract.Model model;
 
-    public ShowResultPresenter(ShowResultActivityContract.Model model){
+    @Inject
+    ShowResultPresenter(ShowResultActivityContract.Model model) {
         this.model = model;
     }
 
     @Override
     public void requestViewData(FighterDao fighterDao, int firstId, int secondId) {
-        model.getResult(fighterDao, firstId, secondId,this);
+        model.getResult(fighterDao, firstId, secondId, this);
     }
 
     @Override

@@ -12,24 +12,29 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.mk.mkfighterresultdb.di.DaggerAddResultActivityComponent;
 import com.mk.mkfighterresultdb.mvp.AddResultActivityContract;
 import com.mk.mkfighterresultdb.mvp.AddResultPresenter;
-import com.mk.mkfighterresultdb.mvp.ModelAddResult;
+
+import javax.inject.Inject;
 
 public class AddResultActivity extends AppCompatActivity implements AddResultActivityContract.View {
 
     String TAG = this.getClass().getSimpleName();
 
+    @Inject
+    FighterDao fighterDao;
+
+    @Inject
+    AddResultPresenter presenter;
+
     private EditText firstFighterMatchWinner, secondFighterMatchWinner, firstRoundWinner, secondRoundWinner,
             fatality, brutality, withoutSpecialFinish, score, matchCourse;
 
-    int firstId = -1, secondId = -1;
-    String firstFighterMatchWinnerValue, secondFighterMatchWinnerValue, firstRoundWinnerValue, secondRoundWinnerValue,
-            fatalityValue, brutalityValue, withoutSpecialFinishValue, scoreValue, matchCourseValue, recordDate, restoreTitle;
+    private int firstId = -1, secondId = -1;
+    private String firstFighterMatchWinnerValue, secondFighterMatchWinnerValue, firstRoundWinnerValue, secondRoundWinnerValue,
+            fatalityValue, brutalityValue, withoutSpecialFinishValue, scoreValue, matchCourseValue, recordDate;
     private boolean isDateSelected = false;
-
-    FighterDao fighterDao;
-    AddResultPresenter presenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,13 +43,15 @@ public class AddResultActivity extends AppCompatActivity implements AddResultAct
 
         if (savedInstanceState != null) {
             isDateSelected = savedInstanceState.getBoolean("isDateSelected");
-            restoreTitle = savedInstanceState.getString("title");
+            recordDate = savedInstanceState.getString("title");
         }
 
         initViews();
         initToolbar();
-        fighterDao = AppDatabase.getDatabase(getApplicationContext()).fighterDao();
-        presenter = new AddResultPresenter(new ModelAddResult());
+
+        DaggerAddResultActivityComponent.builder()
+                .appComponent(((App) getApplicationContext()).getAppComponent())
+                .build().inject(this);
 
     }
 
@@ -86,7 +93,7 @@ public class AddResultActivity extends AppCompatActivity implements AddResultAct
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putBoolean("isDateSelected", isDateSelected);
-        outState.putString("title", getSupportActionBar().getTitle().toString());
+        outState.putString("title", recordDate);
     }
 
     @Override
@@ -226,15 +233,15 @@ public class AddResultActivity extends AppCompatActivity implements AddResultAct
         Toolbar toolbar = (Toolbar) findViewById(R.id.addDataToolbar);
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
-            if (!TextUtils.isEmpty(restoreTitle))
-                getSupportActionBar().setTitle(restoreTitle);
+            if (!TextUtils.isEmpty(recordDate))
+                getSupportActionBar().setTitle(getString(R.string.dateTitle) + " " + recordDate);
             else
                 getSupportActionBar().setTitle(R.string.addData);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
     }
 
-    private void initDatePicker(){
+    private void initDatePicker() {
 
         DialogFragment dateFragment = new DatePickerDialogFragment();
         Bundle args = new Bundle();

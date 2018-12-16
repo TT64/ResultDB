@@ -1,14 +1,10 @@
 package com.mk.mkfighterresultdb.mvp;
 
 import android.annotation.SuppressLint;
-import android.util.Log;
 
 import com.mk.mkfighterresultdb.Fighter;
 import com.mk.mkfighterresultdb.FighterDao;
 import com.mk.mkfighterresultdb.Result;
-
-import org.reactivestreams.Subscriber;
-import org.reactivestreams.Subscription;
 
 import java.util.List;
 import java.util.concurrent.Callable;
@@ -20,14 +16,13 @@ import io.reactivex.functions.Action;
 import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 
-public class ModelOperateResult implements ShowResultActivityContract.Model {
+public class OperateResultModel implements ShowResultActivityContract.Model {
 
     private CompositeDisposable compositeDisposable = new CompositeDisposable();
 
     @SuppressLint("CheckResult")
     @Override
     public void getResult(FighterDao fighterDao, int firstId, int secondId, final onFinishListener onFinishListener) {
-        //fighterDao.getResult(firstId, secondId)
         compositeDisposable.add(fighterDao.getResult(firstId, secondId)
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnError(new Consumer<Throwable>() {

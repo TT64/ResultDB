@@ -8,26 +8,28 @@ import com.mk.mkfighterresultdb.Result;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javax.inject.Inject;
+
 public class AddResultPresenter extends BasePresenter<AddResultActivityContract.View> implements AddResultActivityContract.Presenter, AddResultActivityContract.Model.onFinishedListener {
 
     private AddResultActivityContract.Model mModel;
 
-    public AddResultPresenter(AddResultActivityContract.Model model){
+    @Inject
+    AddResultPresenter(AddResultActivityContract.Model model) {
         this.mModel = model;
     }
 
     @Override
     public boolean checkNumField(String numValue, int orderNumEd) {
         boolean result = false;
-        if (!TextUtils.isEmpty(numValue.trim())){
+        if (!TextUtils.isEmpty(numValue.trim())) {
             if (isValidNumValue(numValue))
                 result = true;
             else {
                 result = false;
                 getView().onCheckNumFieldFailure(orderNumEd);
             }
-        }
-        else {
+        } else {
             getView().onEmptyFiled();
         }
         return result;
@@ -36,15 +38,14 @@ public class AddResultPresenter extends BasePresenter<AddResultActivityContract.
     @Override
     public boolean checkStringField(String stringValue) {
         boolean result = false;
-        if (!TextUtils.isEmpty(stringValue.trim())){
+        if (!TextUtils.isEmpty(stringValue.trim())) {
             if (isValidStringValue(stringValue))
                 result = true;
             else {
                 result = false;
                 getView().onCheckStringFieldFailure();
             }
-        }
-        else {
+        } else {
             getView().onEmptyFiled();
         }
         return result;
@@ -81,7 +82,7 @@ public class AddResultPresenter extends BasePresenter<AddResultActivityContract.
         String patternName = "[0-9]+\\.*[0-9]*";
         Pattern p = Pattern.compile(patternName);
         Matcher matchValue = p.matcher(value.trim());
-       // String[] words = value.split("\\s*(\\s|,|!|\\.)\\s*");
+        // String[] words = value.split("\\s*(\\s|,|!|\\.)\\s*");
         String[] words = value.split("[^a-zA-ZА-Яа-я0-9]\\.");
         return words.length == 1 && matchValue.matches();
         //return matchValue.matches();

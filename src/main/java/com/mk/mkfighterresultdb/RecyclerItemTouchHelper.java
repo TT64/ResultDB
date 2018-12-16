@@ -1,8 +1,6 @@
 package com.mk.mkfighterresultdb;
 
 import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.PorterDuff;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
@@ -10,15 +8,13 @@ import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
-import android.util.Log;
 import android.view.View;
 
 public class RecyclerItemTouchHelper extends ItemTouchHelper.SimpleCallback {
 
     private RecyclerItemTouchListener listener;
-    private int direction;
 
-    public RecyclerItemTouchHelper(int dragDirs, int swipeDirs, RecyclerItemTouchListener listener) {
+    RecyclerItemTouchHelper(int dragDirs, int swipeDirs, RecyclerItemTouchListener listener) {
         super(dragDirs, swipeDirs);
         this.listener = listener;
     }
@@ -68,10 +64,6 @@ public class RecyclerItemTouchHelper extends ItemTouchHelper.SimpleCallback {
             background.setBounds(itemView.getRight() + (int) dX, itemView.getTop(), itemView.getRight(), itemView.getBottom());
             background.draw(c);
 
-            //final View foregroundView = ((ResultRecyclerAdapter.ViewHolder) viewHolder).viewForeground;
-
-            // getDefaultUIUtil().onDraw(c, recyclerView, foregroundView, dX, dY,
-            //        actionState, isCurrentlyActive);
             super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
         }
     }

@@ -1,10 +1,7 @@
 package com.mk.mkfighterresultdb.mvp;
 
-import android.util.Log;
-
 import com.mk.mkfighterresultdb.FighterDao;
 import com.mk.mkfighterresultdb.Result;
-import com.mk.mkfighterresultdb.mvp.AddResultActivityContract;
 
 import java.util.concurrent.Callable;
 
@@ -14,7 +11,7 @@ import rx.functions.Action0;
 import rx.functions.Action1;
 import rx.schedulers.Schedulers;
 
-public class ModelAddResult implements AddResultActivityContract.Model {
+public class AddResultModel implements AddResultActivityContract.Model {
     @Override
     public void addDataToDb(final Result result, final FighterDao fighterDao, final onFinishedListener onFinishedListener) {
         Completable.fromCallable(new Callable<Object>() {
@@ -38,6 +35,6 @@ public class ModelAddResult implements AddResultActivityContract.Model {
                         onFinishedListener.onFailureAddDataResponse();
                     }
                 })
-        .subscribe();
+                .subscribe();
     }
 }

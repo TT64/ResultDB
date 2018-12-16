@@ -9,7 +9,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.functions.Consumer;
 
-public class ModelGetAllOpponents implements OpponentActivityContract.Model {
+public class GetAllOpponentsModel implements OpponentActivityContract.Model {
 
     private CompositeDisposable compositeDisposable = new CompositeDisposable();
 

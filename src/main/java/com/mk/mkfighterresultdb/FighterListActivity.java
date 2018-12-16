@@ -5,37 +5,37 @@ import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.TypedArray;
-import android.os.PersistableBundle;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
-import android.support.v7.widget.helper.ItemTouchHelper;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.Menu;
-import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.mk.mkfighterresultdb.di.DaggerFighterListActivityComponent;
 import com.mk.mkfighterresultdb.mvp.FighterActivityContract;
 import com.mk.mkfighterresultdb.mvp.FighterActivityPresenter;
-import com.mk.mkfighterresultdb.mvp.ModelGetAllFighters;
 import com.simplecityapps.recyclerview_fastscroll.views.FastScrollRecyclerView;
+
+import javax.inject.Inject;
 
 public class FighterListActivity extends AppCompatActivity implements FighterActivityContract.View {
 
     String TAG = this.getClass().getSimpleName();
-    private FighterDao fighterDao;
+
+    @Inject
+    public FighterDao fighterDao;
+
+    @Inject
+    FighterActivityPresenter presenter;
 
     private String searchQuery;
 
     private FighterRecyclerAdapter adapter;
     private Fighter[] mFighters;
-
-    FighterActivityPresenter presenter;
 
     private FastScrollRecyclerView recyclerView;
     private ProgressDialog loading;
@@ -49,12 +49,14 @@ public class FighterListActivity extends AppCompatActivity implements FighterAct
         initRecyclerView();
         initToolbar();
 
+        DaggerFighterListActivityComponent.builder()
+                .appComponent(((App) getApplicationContext()).getAppComponent())
+                .build().inject(this);
+
         if (savedInstanceState != null) {
             searchQuery = savedInstanceState.getString(Constants.KEY_QUERY);
         }
 
-        fighterDao = AppDatabase.getDatabase(getApplicationContext()).fighterDao();
-        presenter = new FighterActivityPresenter(new ModelGetAllFighters());
     }
 
     @Override
@@ -69,8 +71,7 @@ public class FighterListActivity extends AppCompatActivity implements FighterAct
         if (mFighters == null) {
             presenter.requestFighterList(fighterDao);
             loading = ProgressDialog.show(this, getString(R.string.progressDialogTitle), getString(R.string.progressDialogMessage), false, false);
-        }
-        else {
+        } else {
             setAdapter();
         }
 
@@ -135,7 +136,7 @@ public class FighterListActivity extends AppCompatActivity implements FighterAct
 
     @Override
     public Object onRetainCustomNonConfigurationInstance() {
-        return mFighters;
+        return mFighters.clone();
     }
 
     @Override
@@ -151,7 +152,7 @@ public class FighterListActivity extends AppCompatActivity implements FighterAct
 
     @Override
     public void setListToRecyclerView(final Fighter[] fighters) {
-        mFighters = fighters;
+        mFighters = fighters.clone();
         setAdapter();
     }
 
@@ -163,19 +164,19 @@ public class FighterListActivity extends AppCompatActivity implements FighterAct
         recyclerView.setItemAnimator(new DefaultItemAnimator());
     }
 
-    private TypedArray getPhotoFighterArray(){
+    private TypedArray getPhotoFighterArray() {
         return getResources().obtainTypedArray(R.array.fighterImage);
     }
 
-    private void initToolbar(){
-        Toolbar toolbar = (Toolbar)findViewById(R.id.fighterListToolbar);
+    private void initToolbar() {
+        Toolbar toolbar = (Toolbar) findViewById(R.id.fighterListToolbar);
         setSupportActionBar(toolbar);
-        if (getSupportActionBar() != null){
+        if (getSupportActionBar() != null) {
             getSupportActionBar().setTitle(R.string.titleFirstFighter);
         }
     }
 
-    private void setAdapter(){
+    private void setAdapter() {
         adapter = new FighterRecyclerAdapter(mFighters, getPhotoFighterArray(), -1, new RecyclerViewClickListener() {
             @Override
             public void onItemClick(int position) {

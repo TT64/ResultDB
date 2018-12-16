@@ -1,14 +1,11 @@
 package com.mk.mkfighterresultdb;
 
-import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
-import android.util.Log;
 import android.widget.DatePicker;
 
 import java.text.SimpleDateFormat;
@@ -41,8 +38,7 @@ public class DatePickerDialogFragment extends DialogFragment implements android.
         if (getArguments().getInt("MODE") == Constants.ADD_RESULT) {
             AddResultActivity addResultActivity = (AddResultActivity) getActivity();
             addResultActivity.getDate(pickerDate);
-        }
-        else {
+        } else {
             ChangeResultActivity changeResultActivity = (ChangeResultActivity) getActivity();
             changeResultActivity.getChangeDate(pickerDate);
         }

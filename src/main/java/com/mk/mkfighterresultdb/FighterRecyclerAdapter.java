@@ -3,7 +3,6 @@ package com.mk.mkfighterresultdb;
 import android.content.res.TypedArray;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,18 +19,16 @@ import java.util.List;
 
 public class FighterRecyclerAdapter extends RecyclerView.Adapter<FighterRecyclerAdapter.ViewHolder> implements FastScrollRecyclerView.SectionedAdapter, Filterable {
 
-    Fighter[] values;
-    Fighter[] filteredValues;
+    private Fighter[] values;
+    private Fighter[] filteredValues;
     private TypedArray fighterPhoto;
     private RecyclerViewClickListener listener;
-    long id;
 
     FighterRecyclerAdapter(Fighter[] values, TypedArray fighterPhoto, long opponentId, RecyclerViewClickListener listener) {
         this.values = values;
         this.filteredValues = values;
         this.listener = listener;
         this.fighterPhoto = fighterPhoto;
-        this.id = opponentId;
     }
 
     @NonNull
@@ -43,7 +40,6 @@ public class FighterRecyclerAdapter extends RecyclerView.Adapter<FighterRecycler
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
-        //Fighter currentItem = values[i];
         Fighter currentItem = filteredValues[i];
         viewHolder.nameTv.setText(currentItem.getName());
         viewHolder.descTv.setText(currentItem.getDescription());
@@ -52,7 +48,6 @@ public class FighterRecyclerAdapter extends RecyclerView.Adapter<FighterRecycler
 
     @Override
     public int getItemCount() {
-        //return values.length;
         return filteredValues.length;
     }
 
@@ -98,7 +93,7 @@ public class FighterRecyclerAdapter extends RecyclerView.Adapter<FighterRecycler
         private TextView nameTv, descTv;
         private ImageView imageView;
 
-        public ViewHolder(@NonNull View itemView) {
+        ViewHolder(View itemView) {
             super(itemView);
             nameTv = itemView.findViewById(R.id.nameTv);
             descTv = itemView.findViewById(R.id.descTv);

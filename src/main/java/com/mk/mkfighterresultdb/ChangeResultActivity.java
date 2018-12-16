@@ -12,22 +12,26 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.mk.mkfighterresultdb.di.DaggerChangeResultActivityComponent;
 import com.mk.mkfighterresultdb.mvp.ChangeResultContract;
 import com.mk.mkfighterresultdb.mvp.ChangeResultPresenter;
-import com.mk.mkfighterresultdb.mvp.ModelChangeResult;
+
+import javax.inject.Inject;
 
 public class ChangeResultActivity extends AppCompatActivity implements ChangeResultContract.View {
 
-    EditText winMatchFirstFighterChgEd, winMatchSecondFighterChgEd, winFirstRoundChgEd, winSecondRoundChgEd,
-            fatalityChgEd, brutalityChgEd, withoutSpecFinChgEd, scoreChgEd, matchCourseChgEd;
-
+    @Inject
     FighterDao fighterDao;
 
-    Intent getChangeData;
+    @Inject
+    ChangeResultPresenter presenter;
 
-    ChangeResultContract.Presenter presenter;
+    private EditText winMatchFirstFighterChgEd, winMatchSecondFighterChgEd, winFirstRoundChgEd, winSecondRoundChgEd,
+            fatalityChgEd, brutalityChgEd, withoutSpecFinChgEd, scoreChgEd, matchCourseChgEd;
 
-    String firstFighterMatchWinnerChgValue, secondFighterMatchWinnerChgValue, firstRoundWinnerChgValue, secondRoundWinnerChgValue,
+    private Intent getChangeData;
+
+    private String firstFighterMatchWinnerChgValue, secondFighterMatchWinnerChgValue, firstRoundWinnerChgValue, secondRoundWinnerChgValue,
             fatalityChgValue, brutalityChgValue, withoutSpecialFinishChgValue, scoreChgValue, matchCourseChgValue, recordDate;
 
     @Override
@@ -39,10 +43,13 @@ public class ChangeResultActivity extends AppCompatActivity implements ChangeRes
             recordDate = savedInstanceState.getString("title");
         }
 
-        fighterDao = AppDatabase.getDatabase(getApplicationContext()).fighterDao();
-        presenter = new ChangeResultPresenter(new ModelChangeResult());
         initViews();
         initToolbar();
+
+        DaggerChangeResultActivityComponent.builder()
+                .appComponent(((App) getApplicationContext()).getAppComponent())
+                .build().inject(this);
+
     }
 
     @Override
@@ -219,8 +226,8 @@ public class ChangeResultActivity extends AppCompatActivity implements ChangeRes
         matchCourseChgEd = (EditText) findViewById(R.id.matchCourseChgEd);
     }
 
-    private void initToolbar(){
-        Toolbar toolbar = (Toolbar)findViewById(R.id.chgDataToolbar);
+    private void initToolbar() {
+        Toolbar toolbar = (Toolbar) findViewById(R.id.chgDataToolbar);
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
             if (!TextUtils.isEmpty(recordDate))
@@ -231,7 +238,7 @@ public class ChangeResultActivity extends AppCompatActivity implements ChangeRes
         }
     }
 
-    private void prepareValues(){
+    private void prepareValues() {
         firstFighterMatchWinnerChgValue = winMatchFirstFighterChgEd.getText().toString();
         secondFighterMatchWinnerChgValue = winMatchSecondFighterChgEd.getText().toString();
         firstRoundWinnerChgValue = winFirstRoundChgEd.getText().toString();

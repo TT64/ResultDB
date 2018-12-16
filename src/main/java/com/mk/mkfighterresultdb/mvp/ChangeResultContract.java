@@ -4,7 +4,7 @@ import com.mk.mkfighterresultdb.FighterDao;
 
 public class ChangeResultContract {
 
-    public interface Presenter extends MvpPresenter<View>{
+    public interface Presenter extends MvpPresenter<View> {
         boolean checkNumField(String numValue, int orderNumEd);
 
         boolean checkStringField(String stringValue);
@@ -16,7 +16,7 @@ public class ChangeResultContract {
                                  double score, String matchCourse, String recordDate);
     }
 
-    public interface View extends MvpView{
+    public interface View extends MvpView {
         void onEmptyFiled();
 
         void onCheckNumFieldFailure(int orderNumEd);
@@ -30,8 +30,8 @@ public class ChangeResultContract {
         void onErrorChangeResult();
     }
 
-    public interface Model{
-        interface onFinishedListener{
+    public interface Model {
+        interface onFinishedListener {
             void onFinishSuccessChangeResult();
 
             void onFinishFailureChangeResult();

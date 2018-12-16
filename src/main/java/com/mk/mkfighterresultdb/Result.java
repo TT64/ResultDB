@@ -34,7 +34,7 @@ public class Result {
     private String recordDate;
 
     public Result(int idFirstFighter, int idSecondFighter, double firstFighterMatchWinner, double secondFighterMatchWinner, double firstRoundWinner,
-                  double secondRoundWinner, double fatality, double brutality, double withoutSpecialFinish, double score, String matchCourse, String recordDate){
+                  double secondRoundWinner, double fatality, double brutality, double withoutSpecialFinish, double score, String matchCourse, String recordDate) {
         this.idFirstFighter = idFirstFighter;
         this.idSecondFighter = idSecondFighter;
         this.firstFighterMatchWinner = firstFighterMatchWinner;

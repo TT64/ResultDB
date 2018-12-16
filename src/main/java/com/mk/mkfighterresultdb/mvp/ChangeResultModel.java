@@ -10,7 +10,7 @@ import io.reactivex.functions.Action;
 import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 
-public class ModelChangeResult implements ChangeResultContract.Model {
+public class ChangeResultModel implements ChangeResultContract.Model {
     @Override
     public void changeCurrentResult(final FighterDao fighterDao, final long id, final double firstFighterMatchWinner, final double secondFighterMatchWinner, final double firstRoundWinner, final double secondRoundWinner,
                                     final double fatality, final double brutality, final double withoutSpecialFinish, final double score, final String matchCourse, final String recordDate,

@@ -3,11 +3,14 @@ package com.mk.mkfighterresultdb.mvp;
 import com.mk.mkfighterresultdb.Fighter;
 import com.mk.mkfighterresultdb.FighterDao;
 
+import javax.inject.Inject;
+
 public class OpponentPresenter extends BasePresenter<OpponentActivityContract.View> implements OpponentActivityContract.Presenter, OpponentActivityContract.Model.onFinishedListener {
 
     private OpponentActivityContract.Model mModel;
 
-    public OpponentPresenter(OpponentActivityContract.Model model) {
+    @Inject
+    OpponentPresenter(OpponentActivityContract.Model model) {
         this.mModel = model;
     }
 

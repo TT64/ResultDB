@@ -108,7 +108,7 @@ public class ResultRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         private ConstraintLayout viewBackground;
         public CardView viewForeground;
 
-        public ViewHolder(@NonNull View itemView) {
+        ViewHolder(View itemView) {
             super(itemView);
 
             firstFighterMatchWinner = itemView.findViewById(R.id.winMatchFirstFighterResultEd);
@@ -159,7 +159,7 @@ public class ResultRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     }
 
     public class EmptyViewHolder extends RecyclerView.ViewHolder {
-        public EmptyViewHolder(View itemView) {
+        EmptyViewHolder(View itemView) {
             super(itemView);
         }
     }

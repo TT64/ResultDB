@@ -8,7 +8,7 @@ import java.util.List;
 
 public class ShowResultActivityContract {
 
-    public interface Presenter extends MvpPresenter<View>{
+    public interface Presenter extends MvpPresenter<View> {
         void requestViewData(FighterDao fighterDao, int firstId, int secondId);
 
         void requestFirstFighter(FighterDao fighterDao, int firstId);
@@ -20,7 +20,7 @@ public class ShowResultActivityContract {
         void unsubscribeSubs();
     }
 
-    public interface View extends MvpView{
+    public interface View extends MvpView {
 
         void setListToRecyclerView(List<Result> resultList);
 
@@ -42,9 +42,9 @@ public class ShowResultActivityContract {
 
     }
 
-    public interface Model{
+    public interface Model {
 
-        interface onFinishListener{
+        interface onFinishListener {
 
             void onFinishedResponseGetResultList(List<Result> results);
 

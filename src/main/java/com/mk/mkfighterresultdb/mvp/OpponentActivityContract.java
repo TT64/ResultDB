@@ -21,15 +21,16 @@ public class OpponentActivityContract {
 
         void setListToRecyclerView(Fighter[] fighters);
 
-        }
+    }
 
-    public interface Model{
+    public interface Model {
 
-        interface onFinishedListener{
+        interface onFinishedListener {
             void onFinishedGetOpponentListResponse(Fighter[] fighters);
 
             void onFailureGetOpponentListResponse();
         }
+
         void getOpponents(long id, FighterDao fighterDao, onFinishedListener onFinishedListener);
 
         void unsubscribe();
