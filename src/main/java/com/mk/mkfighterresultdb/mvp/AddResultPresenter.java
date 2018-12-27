@@ -2,8 +2,8 @@ package com.mk.mkfighterresultdb.mvp;
 
 import android.text.TextUtils;
 
-import com.mk.mkfighterresultdb.FighterDao;
-import com.mk.mkfighterresultdb.Result;
+import com.mk.mkfighterresultdb.db.FighterDao;
+import com.mk.mkfighterresultdb.db.Result;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -26,7 +26,6 @@ public class AddResultPresenter extends BasePresenter<AddResultActivityContract.
             if (isValidNumValue(numValue))
                 result = true;
             else {
-                result = false;
                 getView().onCheckNumFieldFailure(orderNumEd);
             }
         } else {
@@ -42,7 +41,6 @@ public class AddResultPresenter extends BasePresenter<AddResultActivityContract.
             if (isValidStringValue(stringValue))
                 result = true;
             else {
-                result = false;
                 getView().onCheckStringFieldFailure();
             }
         } else {
@@ -78,7 +76,7 @@ public class AddResultPresenter extends BasePresenter<AddResultActivityContract.
         getView().onFailureAddDataResponse();
     }
 
-    public static boolean isValidNumValue(String value) {
+    static boolean isValidNumValue(String value) {
         String patternName = "[0-9]+\\.*[0-9]*";
         Pattern p = Pattern.compile(patternName);
         Matcher matchValue = p.matcher(value.trim());
@@ -88,7 +86,7 @@ public class AddResultPresenter extends BasePresenter<AddResultActivityContract.
         //return matchValue.matches();
     }
 
-    public static boolean isValidStringValue(String value) {
+    static boolean isValidStringValue(String value) {
         return value.length() <= 20;
     }
 }

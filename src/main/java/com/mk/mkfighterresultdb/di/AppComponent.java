@@ -1,6 +1,6 @@
 package com.mk.mkfighterresultdb.di;
 
-import com.mk.mkfighterresultdb.FighterDao;
+import com.mk.mkfighterresultdb.db.FighterDao;
 
 import javax.inject.Singleton;
 

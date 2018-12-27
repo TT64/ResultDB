@@ -12,7 +12,7 @@
         android:background="@drawable/background"
         android:descendantFocusability="beforeDescendants"
         android:focusableInTouchMode="true"
-        tools:context=".ChangeResultActivity">
+        tools:context=".ui.ChangeResultActivity">
 
         <android.support.v7.widget.Toolbar
             android:id="@+id/chgDataToolbar"

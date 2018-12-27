@@ -2,7 +2,7 @@ package com.mk.mkfighterresultdb.mvp;
 
 import android.text.TextUtils;
 
-import com.mk.mkfighterresultdb.FighterDao;
+import com.mk.mkfighterresultdb.db.FighterDao;
 
 import javax.inject.Inject;
 

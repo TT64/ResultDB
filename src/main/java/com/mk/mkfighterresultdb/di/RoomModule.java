@@ -6,10 +6,10 @@ import android.arch.persistence.room.Room;
 import android.arch.persistence.room.RoomDatabase;
 import android.support.annotation.NonNull;
 
-import com.mk.mkfighterresultdb.AppDatabase;
 import com.mk.mkfighterresultdb.Constants;
-import com.mk.mkfighterresultdb.Fighter;
-import com.mk.mkfighterresultdb.FighterDao;
+import com.mk.mkfighterresultdb.db.AppDatabase;
+import com.mk.mkfighterresultdb.db.Fighter;
+import com.mk.mkfighterresultdb.db.FighterDao;
 
 import java.util.concurrent.Callable;
 

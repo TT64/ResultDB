@@ -1,8 +1,8 @@
 package com.mk.mkfighterresultdb.mvp;
 
-import com.mk.mkfighterresultdb.Fighter;
-import com.mk.mkfighterresultdb.FighterDao;
-import com.mk.mkfighterresultdb.Result;
+import com.mk.mkfighterresultdb.db.Fighter;
+import com.mk.mkfighterresultdb.db.FighterDao;
+import com.mk.mkfighterresultdb.db.Result;
 
 import java.util.List;
 

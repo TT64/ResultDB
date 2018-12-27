@@ -1,4 +1,4 @@
-package com.mk.mkfighterresultdb;
+package com.mk.mkfighterresultdb.ui;
 
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
@@ -11,6 +11,9 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.mk.mkfighterresultdb.R;
+import com.mk.mkfighterresultdb.db.Result;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -83,7 +86,7 @@ public class ResultRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         }
     }
 
-    public void pendingRemoval(int position) {
+    void pendingRemoval(int position) {
         final Result item = values.get(position);
         if (!itemsPendingRemoval.contains(item)) {
             itemsPendingRemoval.add(item);
@@ -91,7 +94,7 @@ public class ResultRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         }
     }
 
-    public void pendingCancelRemoval(int position) {
+    void pendingCancelRemoval(int position) {
         final Result item = values.get(position);
         if (itemsPendingRemoval.contains(item)) {
             itemsPendingRemoval.remove(item);
@@ -106,7 +109,7 @@ public class ResultRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         private TextView recordDate;
         private ImageView deleteBtn, cancelBtn, editBtn;
         private ConstraintLayout viewBackground;
-        public CardView viewForeground;
+        CardView viewForeground;
 
         ViewHolder(View itemView) {
             super(itemView);

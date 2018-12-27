@@ -1,10 +1,9 @@
-package com.mk.mkfighterresultdb;
+package com.mk.mkfighterresultdb.db;
 
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
-import android.support.v7.app.AppCompatActivity;
 
-import java.util.ArrayList;
+import com.mk.mkfighterresultdb.Constants;
 
 @Entity
 public class Fighter {

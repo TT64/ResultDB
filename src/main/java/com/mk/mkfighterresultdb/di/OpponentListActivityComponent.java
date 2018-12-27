@@ -1,6 +1,6 @@
 package com.mk.mkfighterresultdb.di;
 
-import com.mk.mkfighterresultdb.OpponentActivity;
+import com.mk.mkfighterresultdb.ui.OpponentActivity;
 
 import dagger.Component;
 

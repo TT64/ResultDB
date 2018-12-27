@@ -1,4 +1,4 @@
-package com.mk.mkfighterresultdb;
+package com.mk.mkfighterresultdb.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,6 +12,10 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.mk.mkfighterresultdb.App;
+import com.mk.mkfighterresultdb.Constants;
+import com.mk.mkfighterresultdb.R;
+import com.mk.mkfighterresultdb.db.FighterDao;
 import com.mk.mkfighterresultdb.di.DaggerChangeResultActivityComponent;
 import com.mk.mkfighterresultdb.mvp.ChangeResultContract;
 import com.mk.mkfighterresultdb.mvp.ChangeResultPresenter;

@@ -1,4 +1,4 @@
-package com.mk.mkfighterresultdb;
+package com.mk.mkfighterresultdb.ui;
 
 import android.content.res.TypedArray;
 import android.support.annotation.NonNull;
@@ -11,6 +11,8 @@ import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.mk.mkfighterresultdb.R;
+import com.mk.mkfighterresultdb.db.Fighter;
 import com.simplecityapps.recyclerview_fastscroll.views.FastScrollRecyclerView;
 
 import java.util.ArrayList;

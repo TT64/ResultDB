@@ -1,6 +1,6 @@
 package com.mk.mkfighterresultdb.mvp;
 
-import com.mk.mkfighterresultdb.FighterDao;
+import com.mk.mkfighterresultdb.db.FighterDao;
 
 import java.util.concurrent.Callable;
 

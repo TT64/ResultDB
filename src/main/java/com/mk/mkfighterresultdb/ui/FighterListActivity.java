@@ -1,4 +1,4 @@
-package com.mk.mkfighterresultdb;
+package com.mk.mkfighterresultdb.ui;
 
 import android.app.ProgressDialog;
 import android.app.SearchManager;
@@ -15,6 +15,11 @@ import android.text.TextUtils;
 import android.view.Menu;
 import android.widget.Toast;
 
+import com.mk.mkfighterresultdb.App;
+import com.mk.mkfighterresultdb.Constants;
+import com.mk.mkfighterresultdb.R;
+import com.mk.mkfighterresultdb.db.Fighter;
+import com.mk.mkfighterresultdb.db.FighterDao;
 import com.mk.mkfighterresultdb.di.DaggerFighterListActivityComponent;
 import com.mk.mkfighterresultdb.mvp.FighterActivityContract;
 import com.mk.mkfighterresultdb.mvp.FighterActivityPresenter;

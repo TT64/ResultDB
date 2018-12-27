@@ -2,8 +2,8 @@ package com.mk.mkfighterresultdb.mvp;
 
 import android.annotation.SuppressLint;
 
-import com.mk.mkfighterresultdb.Fighter;
-import com.mk.mkfighterresultdb.FighterDao;
+import com.mk.mkfighterresultdb.db.Fighter;
+import com.mk.mkfighterresultdb.db.FighterDao;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;

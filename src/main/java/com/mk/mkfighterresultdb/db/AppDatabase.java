@@ -1,4 +1,4 @@
-package com.mk.mkfighterresultdb;
+package com.mk.mkfighterresultdb.db;
 
 import android.arch.persistence.room.Database;
 import android.arch.persistence.room.RoomDatabase;

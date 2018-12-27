@@ -1,4 +1,4 @@
-package com.mk.mkfighterresultdb;
+package com.mk.mkfighterresultdb.ui;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -14,6 +14,11 @@ import android.text.TextUtils;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.mk.mkfighterresultdb.App;
+import com.mk.mkfighterresultdb.R;
+import com.mk.mkfighterresultdb.db.Fighter;
+import com.mk.mkfighterresultdb.db.FighterDao;
+import com.mk.mkfighterresultdb.db.Result;
 import com.mk.mkfighterresultdb.di.DaggerShowResultActivityComponent;
 import com.mk.mkfighterresultdb.mvp.ShowResultActivityContract;
 import com.mk.mkfighterresultdb.mvp.ShowResultPresenter;
