@@ -26,7 +26,7 @@ public class FighterRecyclerAdapter extends RecyclerView.Adapter<FighterRecycler
     private TypedArray fighterPhoto;
     private RecyclerViewClickListener listener;
 
-    FighterRecyclerAdapter(Fighter[] values, TypedArray fighterPhoto, long opponentId, RecyclerViewClickListener listener) {
+    FighterRecyclerAdapter(Fighter[] values, TypedArray fighterPhoto, RecyclerViewClickListener listener) {
         this.values = values;
         this.filteredValues = values;
         this.listener = listener;
@@ -105,7 +105,7 @@ public class FighterRecyclerAdapter extends RecyclerView.Adapter<FighterRecycler
 
         @Override
         public void onClick(View v) {
-            listener.onItemClick(getAdapterPosition());
+            listener.onItemClick(filteredValues[getAdapterPosition()].getId());
         }
     }
 }

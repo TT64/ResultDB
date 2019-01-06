@@ -167,7 +167,6 @@ public class OpponentActivity extends AppCompatActivity implements OpponentActiv
     public void setListToRecyclerView(final Fighter[] fighters) {
         mOpponents = fighters.clone();
         setAdapter();
-
     }
 
     private TypedArray getPhotoFighterArray() {
@@ -219,10 +218,10 @@ public class OpponentActivity extends AppCompatActivity implements OpponentActiv
     }
 
     private void setAdapter() {
-        adapter = new FighterRecyclerAdapter(mOpponents, getPhotoFighterArray(), firstId, new RecyclerViewClickListener() {
+        adapter = new FighterRecyclerAdapter(mOpponents, getPhotoFighterArray(), new RecyclerViewClickListener() {
             @Override
             public void onItemClick(int position) {
-                secondId = mOpponents[position].getId();
+                secondId = position;
                 initChooseDialog();
             }
         });

@@ -18,14 +18,18 @@ public class GetAllOpponentsModel implements OpponentActivityContract.Model {
     public void getOpponents(final long id, final FighterDao fighterDao, final onFinishedListener onFinishedListener) {
         compositeDisposable.add(fighterDao.getOpponent(id)
                 .observeOn(AndroidSchedulers.mainThread())
+                .doOnError(new Consumer<Throwable>() {
+                    @Override
+                    public void accept(Throwable throwable) throws Exception {
+                        onFinishedListener.onFailureGetOpponentListResponse();
+                    }
+                })
                 .subscribe(new Consumer<Fighter[]>() {
                     @Override
                     public void accept(Fighter[] opponents) throws Exception {
                         if (opponents != null){
                             onFinishedListener.onFinishedGetOpponentListResponse(opponents);
                         }
-                        else
-                            onFinishedListener.onFailureGetOpponentListResponse();
                     }
                 }));
     }

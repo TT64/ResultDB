@@ -52,7 +52,6 @@ public class FighterListActivity extends AppCompatActivity implements FighterAct
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fighter_list);
         initRecyclerView();
-        initToolbar();
 
         DaggerFighterListActivityComponent.builder()
                 .appComponent(((App) getApplicationContext()).getAppComponent())
@@ -68,6 +67,7 @@ public class FighterListActivity extends AppCompatActivity implements FighterAct
     protected void onStart() {
         super.onStart();
 
+        initToolbar();
         presenter.attachView(this);
         if (getLastNonConfigurationInstance() != null) {
             mFighters = (Fighter[]) getLastCustomNonConfigurationInstance();
@@ -182,11 +182,11 @@ public class FighterListActivity extends AppCompatActivity implements FighterAct
     }
 
     private void setAdapter() {
-        adapter = new FighterRecyclerAdapter(mFighters, getPhotoFighterArray(), -1, new RecyclerViewClickListener() {
+        adapter = new FighterRecyclerAdapter(mFighters, getPhotoFighterArray(), new RecyclerViewClickListener() {
             @Override
             public void onItemClick(int position) {
                 Intent opponentId = new Intent(getApplicationContext(), OpponentActivity.class);
-                opponentId.putExtra("id", mFighters[position].getId());
+                opponentId.putExtra("id", position);
                 startActivity(opponentId);
             }
         });
