@@ -1,13 +1,6 @@
 apply plugin: 'com.android.application'
 
 android {
-    signingConfigs {
-        config {
-            keyPassword '908486'
-            storeFile file('C:/Android/sign/sign_key.jks')
-            storePassword '908486'
-        }
-    }
     compileSdkVersion 28
     defaultConfig {
         applicationId "com.mk.mkfighterresultdb"
@@ -16,7 +9,6 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-        signingConfig signingConfigs.config
     }
     buildTypes {
         release {
