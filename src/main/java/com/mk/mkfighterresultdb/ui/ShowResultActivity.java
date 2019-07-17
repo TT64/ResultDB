@@ -73,7 +73,6 @@ public class ShowResultActivity extends AppCompatActivity implements ShowResultA
         firstId = getIntent.getIntExtra("firstFighterId", firstId);
         secondId = getIntent.getIntExtra("secondFighterId", secondId);
         presenter.attachView(this);
-
         if (getLastNonConfigurationInstance() != null) {
             resultList = (List<Result>) getLastCustomNonConfigurationInstance();
         }
