@@ -1,0 +1,76 @@
+<resources>
+    <string name="app_name">Результаты боев</string>
+    <string name="progressDialogTitle">Загрузка данных</string>
+    <string name="progressDialogMessage">Пожалуйста, подождите…</string>
+    <string name="errorMessage">Что-то пошло не так.. Попробуйте еще раз</string>
+    <string name="titleFirstFighter">Выбери бойца №1</string>
+    <string name="titleSecondFighter">Выбери бойца №2</string>
+    <string name="addBtn">Добавить данные</string>
+    <string name="viewBtn">Просмотреть данные</string>
+    <string name="firstFighterWinner"><i>Победа бойца №1</i></string>
+    <string name="secondFighterWinner"><i>Победа бойца №2</i></string>
+    <string name="firstRoundWinner"><i>Победа на раунд №1</i></string>
+    <string name="secondRoundWinner"><i>Победа на раунд №2</i></string>
+    <string name="fatality"><i>Fatality</i></string>
+    <string name="brutality"><i>Brutality</i></string>
+    <string name="withoutSpecFinish"><i>Без добивания</i></string>
+    <string name="score"><i>Счет</i></string>
+    <string name="matchCourse"><i>Ход матча</i></string>
+    <string name="emptyFieldError">Поле должно быть заполнено</string>
+    <string name="numFieldCheckError">Поле должно содержать только цифры</string>
+    <string name="stringFieldCheckError">Поле должно содержать не больше 20 символов</string>
+    <string name="successDataAdd">Данные внесены</string>
+    <string name="emptyDataTv">По выбранным бойцам данные еще не добавлены</string>
+    <string name="del_menu_item">Удалить</string>
+    <string name="upd_menu_item">Изменить</string>
+    <string name="successResultDelete">Запись удалена</string>
+    <string name="chgBtn">Сохранить</string>
+    <string name="successChangeResult">Запись изменена</string>
+    <string name="addData">Добавить данные</string>
+    <string name="chgData">Изменить данные</string>
+    <string name="firstFighterTitle">Боец №1</string>
+    <string name="secondFighterTitle">Боец №2</string>
+    <string name="confirmDialogTitle">Удалить запись?</string>
+    <string name="noBtn">Нет</string>
+    <string name="yesBtn">Да</string>
+    <string name="changeDate">Изменить дату</string>
+    <string name="dateCheckError">Неверная дата</string>
+    <string name="dateTitle">Дата:</string>
+    <string name="searchMenu">Search</string>
+    <string name="searchHint">Введите имя</string>
+    <array name="fighterImage">
+        <item>@drawable/bo_rai_cho</item>
+        <item>@drawable/goro</item>
+        <item>@drawable/jax</item>
+        <item>@drawable/jason</item>
+        <item>@drawable/jac</item>
+        <item>@drawable/cage</item>
+        <item>@drawable/divora</item>
+        <item>@drawable/kano</item>
+        <item>@drawable/kenshi</item>
+        <item>@drawable/kitana</item>
+        <item>@drawable/leatherface</item>
+        <item>@drawable/kotal</item>
+        <item>@drawable/quanchi</item>
+        <item>@drawable/kung_jin</item>
+        <item>@drawable/kung_lao</item>
+        <item>@drawable/cassie</item>
+        <item>@drawable/liu_kang</item>
+        <item>@drawable/mileena</item>
+        <item>@drawable/raiden</item>
+        <item>@drawable/reptile</item>
+        <item>@drawable/sub_zero</item>
+        <item>@drawable/scorpion</item>
+        <item>@drawable/sonya</item>
+        <item>@drawable/takeda</item>
+        <item>@drawable/tanya</item>
+        <item>@drawable/tremor</item>
+        <item>@drawable/triborg</item>
+        <item>@drawable/ferra</item>
+        <item>@drawable/predator</item>
+        <item>@drawable/alien</item>
+        <item>@drawable/shinnok</item>
+        <item>@drawable/ermak</item>
+        <item>@drawable/erron_black</item>
+    </array>
+</resources>

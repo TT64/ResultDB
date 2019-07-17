@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true">
+
+    <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/background"
+        android:descendantFocusability="beforeDescendants"
+        android:focusableInTouchMode="true"
+        tools:context=".ui.ChangeResultActivity">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/chgDataToolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?attr/colorPrimary"
+            android:minHeight="?attr/actionBarSize"
+            android:theme="?attr/actionBarTheme" />
+
+        <EditText
+            android:id="@+id/winMatchFirstFighterChgEd"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:hint="@string/firstFighterWinner"
+            android:inputType="number|numberDecimal"
+            app:layout_constraintBottom_toTopOf="@+id/winMatchSecondFighterChgEd"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/chgDataToolbar"
+            app:layout_constraintVertical_chainStyle="spread"
+            style="@style/styled_edittext" />
+
+        <EditText
+            android:id="@+id/winMatchSecondFighterChgEd"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:hint="@string/secondFighterWinner"
+            android:inputType="number|numberDecimal"
+            app:layout_constraintBottom_toTopOf="@+id/winFirstRoundChgEd"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/winMatchFirstFighterChgEd"
+            style="@style/styled_edittext" />
+
+        <EditText
+            android:id="@+id/winFirstRoundChgEd"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:hint="@string/firstRoundWinner"
+            android:inputType="number|numberDecimal"
+            app:layout_constraintBottom_toTopOf="@+id/winSecondRoundChgEd"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/winMatchSecondFighterChgEd"
+            style="@style/styled_edittext" />
+
+        <EditText
+            android:id="@+id/winSecondRoundChgEd"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:hint="@string/secondRoundWinner"
+            android:inputType="number|numberDecimal"
+            app:layout_constraintBottom_toTopOf="@+id/fatalityChgEd"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/winFirstRoundChgEd"
+            style="@style/styled_edittext" />
+
+        <EditText
+            android:id="@+id/fatalityChgEd"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:hint="@string/fatality"
+            android:inputType="number|numberDecimal"
+            app:layout_constraintBottom_toTopOf="@+id/brutalityChgEd"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/winSecondRoundChgEd"
+            style="@style/styled_edittext" />
+
+        <EditText
+            android:id="@+id/brutalityChgEd"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:hint="@string/brutality"
+            android:inputType="number|numberDecimal"
+            app:layout_constraintBottom_toTopOf="@+id/withoutSpecFinChgEd"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/fatalityChgEd"
+            style="@style/styled_edittext" />
+
+        <EditText
+            android:id="@+id/withoutSpecFinChgEd"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:hint="@string/withoutSpecFinish"
+            android:inputType="number|numberDecimal"
+            app:layout_constraintBottom_toTopOf="@+id/scoreChgEd"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/brutalityChgEd"
+            style="@style/styled_edittext" />
+
+        <EditText
+            android:id="@+id/scoreChgEd"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:hint="@string/score"
+            android:inputType="number|numberDecimal"
+            app:layout_constraintBottom_toTopOf="@+id/matchCourseChgEd"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/withoutSpecFinChgEd"
+            style="@style/styled_edittext" />
+
+        <EditText
+            android:id="@+id/matchCourseChgEd"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:hint="@string/matchCourse"
+            android:inputType="textPersonName"
+            android:maxLength="20"
+            app:layout_constraintBottom_toTopOf="@+id/chgDataBtn"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/scoreChgEd"
+            style="@style/styled_edittext" />
+
+        <Button
+            android:id="@+id/chgDataBtn"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="50dp"
+            android:layout_marginLeft="50dp"
+            android:layout_marginRight="50dp"
+            android:layout_marginStart="50dp"
+            android:background="@color/colorPrimaryDark"
+            android:onClick="chgResult"
+            android:text="@string/chgBtn"
+            android:textAllCaps="false"
+            android:textColor="@android:color/white"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+    </android.support.constraint.ConstraintLayout>
+</ScrollView>
